@@ -1,15 +1,1784 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Huzaifa Salim — UI/UX & Product Designer</title>
-    <!-- Tailwind CSS Script for immediate setup -->
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth select-none">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
+    <meta name="description" content="Huzaifa Salim — AI-First Experience & Product Designer. 3+ years designing mobility platforms, B2B SaaS, and EdTech products."/>
+    <meta name="theme-color" content="#070709"/>
+    <title>Portfolio — Huzaifa Salim</title>
+    
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-[#0F1115]">
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            black: '#070709',
+                            dark: '#0c0c10',
+                            card: '#111116',
+                            border: 'rgba(255, 255, 255, 0.05)',
+                            borderHover: 'rgba(255, 255, 255, 0.12)',
+                            accent: '#818cf8', /* Premium Soft Violet/Indigo */
+                            mint: '#34d399',   /* Soft Mint Highlight */
+                            purple: '#c084fc', /* Soft Lavender Highlight */
+                            slate: '#94a3b8'
+                        }
+                    },
+                    fontFamily: {
+                        display: ['Bricolage Grotesque', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ================= 3D CYCLORAMA ARCHITECTURAL GRID SYSTEM ================= */
+        /* Replicates the studio backdrop grid curving of 77646068_SL-072622-51930-20.jpg */
+        /* Configured to morph: Roof -> Wall -> Floor as user scrolls down */
+        .cyc-grid-container {
+            position: fixed;
+            inset: 0;
+            perspective: 800px;
+            transform-style: preserve-3d;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+            opacity: 0.28; /* Pronounced grid visibility */
+            transition: opacity 0.5s ease;
+        }
+
+        .cyc-grid-mesh {
+            position: absolute;
+            width: 220%;
+            height: 380%;
+            top: -140%;
+            left: -60%;
+            background-size: 50px 50px; /* Slightly larger for an architectural spacing feel */
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.15) 1.5px, transparent 1.5px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 1.5px, transparent 1.5px);
+            transform-origin: center center;
+            will-change: transform;
+            mask-image: radial-gradient(circle at 50% 50%, black 50%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at 50% 50%, black 50%, transparent 100%);
+        }
+
+        /* Ambient drifting gradient orbs */
+        @keyframes float-orb-1 {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(40px, -70px) scale(1.15); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
+        }
+        @keyframes float-orb-2 {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            50% { transform: translate(-60px, 50px) scale(1.2); }
+        }
+        @keyframes float-orb-3 {
+            0%, 100% { transform: translate(0px, 0px) scale(1.05); }
+            40% { transform: translate(50px, 60px) scale(0.85); }
+        }
+
+        .orb-drift-1 {
+            animation: float-orb-1 18s infinite ease-in-out;
+        }
+        .orb-drift-2 {
+            animation: float-orb-2 24s infinite ease-in-out;
+        }
+        .orb-drift-3 {
+            animation: float-orb-3 20s infinite ease-in-out;
+        }
+        
+        .accessible-focus:focus-visible {
+            outline: 2px solid #818cf8;
+            outline-offset: 4px;
+        }
+
+        /* 3D Transform and Card Parallax Setup */
+        .tilt-container {
+            transform-style: preserve-3d;
+            perspective: 1200px;
+        }
+        .tilt-card {
+            transform-style: preserve-3d;
+            will-change: transform;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Marquee Continuous Infinite Slider */
+        @keyframes marquee {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marquee 24s linear infinite;
+            will-change: transform;
+            backface-visibility: hidden;
+        }
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        /* Continuous Dual-Direction Scroll Reveal System */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            filter: blur(10px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 1s cubic-bezier(0.16, 1, 0.3, 1), 
+                        filter 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity, filter;
+        }
+        .scroll-reveal.reveal-active {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0px);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #070709;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1c1c24;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3f3f46;
+        }
+
+        /* Premium Tactical Hover Transitions for Buttons */
+        .tactile-btn {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .tactile-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 25px -5px rgba(129, 140, 248, 0.15), 0 8px 10px -6px rgba(129, 140, 248, 0.15);
+        }
+        .tactile-btn:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        /* Animated Loading Progress Grid Background */
+        @keyframes loadingPulse {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+        }
+        .loading-pulse-node {
+            animation: loadingPulse 1.5s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-brand-black text-zinc-300 font-sans antialiased selection:bg-brand-accent selection:text-white overflow-x-hidden relative min-h-screen pb-20 md:pb-6">
+
+    <!-- ================= SYSTEM LOADER ================= -->
+    <div id="loading-screen" class="fixed inset-0 z-[100] bg-brand-black flex flex-col items-center justify-center transition-all duration-700 pointer-events-auto">
+        <div class="space-y-8 w-4/5 max-w-sm text-center relative z-10">
+            <!-- Assembling Geometric Icon -->
+            <div class="relative w-16 h-16 mx-auto mb-4">
+                <div class="absolute inset-0 border border-white/10 rounded-full"></div>
+                <div class="absolute inset-2 border-2 border-[#818cf8]/40 rounded-full animate-ping"></div>
+                <!-- Interactive Crosshair Assembler -->
+                <div class="absolute top-1/2 left-0 right-0 h-[1px] bg-white/20"></div>
+                <div class="absolute left-1/2 top-0 bottom-0 w-[1px] bg-white/20"></div>
+                <!-- Core Solid Element (Native SVG Branding) -->
+                <div class="absolute inset-3 bg-brand-dark border border-white/10 flex items-center justify-center rounded-lg overflow-hidden p-1">
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                         viewBox="0 0 340.9 340.9" style="enable-background:new 0 0 340.9 340.9; width: 100%; height: 100%;" xml:space="preserve">
+                    <style type="text/css">
+                        .st0{display:none;}
+                        .st1{display:inline;}
+                        .st2{display:inline;clip-path:url(#SVGID_2_);fill:#010C80;}
+                        .st3{display:inline;clip-path:url(#SVGID_4_);fill:#010C80;}
+                        .st4{display:none;fill:#010C80;}
+                        .st5{clip-path:url(#SVGID_6_);fill:#FFFFFF;}
+                    </style>
+                    <g>
+                        <path class="st5" d="M304.9,234.5c-2.7-1.5-6.1-1.1-8,1.1c-2.3,2.3-1.9,4.5-2.7,7.2c-3.4,12.5-21.6,13.6-26.5,1.5V85.6l25.8-26.1
+                            c3-3,2.7-8-0.8-10.2c-2.7-1.9-5.3-1.1-8-0.8c-5.7,0.8-11.7,0-17.4-0.4c-7.6-0.8-14.8-2.3-22-3.8c-5.3-1.1-14.4-5.7-18.6-0.8
+                            l-28.8,34.8c-3.4,4.5-0.4,11,5.3,11h2.7v34.1h-41.7V88.6l26.9-36.7c3.8-5.3-1.9-12.9-8-10.2c-1.9,0.8-3.8,2.6-5.3,4.2
+                            c-8,6.1-17.4,9.9-27.7,9.5c-7.2-0.4-14-2.7-20.8-4.2c-6.4-1.5-13.3-2.7-19.7-4.2c-8-1.5-15.9-3-24.2-4.2
+                            C67.4,39,51.9,44.3,41.7,57.6c-9.5,12.1-11.4,29.2-4.5,43.6c6.4,13.6,20.5,23.1,36,23.9c3.8,0,9.8,0.4,13.3-2.3
+                            c3-2.3,3.4-6.8,1.1-9.5c-3.4-3.4-8-3.4-11-6.4c-2.7-2.3-4.5-5.7-4.9-9.5c-0.8-7.6,4.2-15.2,11.7-16.7c8-1.9,15.9,2.7,18.2,10.2v33
+                            c-14.4,2.7-23.9,14-25.8,28.4c-0.4,3.4-1.1,7.6,1.5,10.6c2.3,2.3,5.7,2.7,8.3,1.1c4.9-2.7,10.2-4.5,15.5-5.3v8
+                            c-14.4,2.7-23.9,14-25.8,28.4c-0.4,3.4-1.1,7.6,1.5,10.6c2.3,2.3,5.7,2.7,8.3,1.1c4.9-2.7,10.2-4.5,15.5-5.3v22
+                            c-8.7,1.9-16.7,4.9-24.6,9.5c-14,8-25.8,19.7-33.7,33.7c-2.3,3.8-3.8,7.6-5.3,11.4c-1.1,3.4-3.4,7.2-1.5,11
+                            c5.3,9.8,15.9-3.4,20.8-6.4c15.2-10.2,33.7-14.8,51.9-12.1c9.1,1.1,18.2,4.2,26.1,8.7c4.2,2.3,8.3,5.3,11.7,8.3
+                            c3,2.7,7.2,4.9,11,1.5l29.2-25c8-6.4-0.8-14-4.9-17.8c-5.3-4.9-11.4-9.5-17.4-13.3v-53.4h41.7V244c0,28,28.4,48.9,54.2,48.9
+                            c23.9,0,44.7-17.8,48.1-41.3C308.7,246.2,310.2,237.5,304.9,234.5L304.9,234.5z M244,275.8c-12.9-5.3-24.6-17-24.6-31.8v-71.2
+                            c0-3.8-3-6.8-6.8-6.8h-55.3c-3.8,0-6.8,3-6.8,6.8v64.4c0,5.7,6.8,7.6,10.6,10.2c4.5,3,8.7,6.4,12.5,10.2l-20.1,17
+                            C127.7,254.2,90.9,250,61,264.4c6.8-9.1,15.9-16.7,26.1-21.6c5.3-2.7,11-4.5,16.7-6.1c4.9-1.1,11.4-1.5,11-8V194
+                            c0.4-11.4-17.8-6.4-23.9-4.5c3-6.4,9.9-9.8,16.7-9.8c4.2,0.4,7.2-3,7.2-7.2v-20.8c0.4-11.4-17.8-6.4-23.9-4.5
+                            c1.9-4.2,5.3-7.2,9.9-8.7c2.3-0.8,4.5-0.8,7.2-1.1c3.8,0.4,7.2-3,7.2-6.8V90.2c0-7.2-6.8-15.2-12.5-18.6
+                            c-6.8-4.5-15.5-5.7-23.1-3.8c-17,4.5-26.1,23.9-19.3,39.8c-12.9-7.6-18.2-24.2-11-37.5c3-5.7,8-10.2,14-12.9
+                            c6.4-2.7,12.5-1.9,19.3-0.8c10.2,1.5,20.5,3.4,30.3,5.7c15.9,3,33,9.9,49.2,6.1l-11,15.2c-0.8,1.1-1.1,2.7-1.1,4.2v43.9
+                            c0,3.8,3,6.8,6.8,6.8h55.3c3.8,0,6.8-3,6.8-6.8V83c0-2.3-1.1-4.2-3-5.7l17.8-21.6c7.6,1.9,23.5,5.7,37.5,6.4L255.7,78
+                            c-1.1,1.5-1.9,3-1.9,4.9v162.5c0,6.4,6.4,13.3,11.4,16.7c6.4,4.2,14,5.3,21.6,3.8C276.5,278.8,259.1,281.8,244,275.8L244,275.8z
+                             M39.4,209.9c-3.8,0-6.8-3-6.8-6.8v-49.6c0-3.8,3-6.8,6.8-6.8c3.8,0,6.8,3,6.8,6.8V203C46.2,206.8,43.2,209.9,39.4,209.9
+                            L39.4,209.9z M128.4,306.8c-1.5,3.4-5.3,5.3-8.7,3.8c-13.6-5.3-29.2-5.3-42.8,0.4c-0.8,0.4-1.9,0.4-2.7,0.4
+                            c-2.6,0-5.3-1.5-6.4-4.2c-1.5-3.4,0.4-7.6,3.8-9.1c16.7-6.8,36-7.2,52.7-0.4C128,299.6,129.9,303.4,128.4,306.8L128.4,306.8z
+                             M297.7,89.4c3.8,0,6.8,3,6.8,6.8V203c0,3.8-3,6.8-6.8,6.8s-6.8-3-6.8-6.8V96.2C290.9,92.4,294,89.4,297.7,89.4L297.7,89.4z
+                             M286.4,0H49.6C22.4,0,0,22.4,0,49.6v237.1c0,29.5,24.6,54.2,54.6,54.2h232.2c29.5,0,54.2-24.6,54.2-54.6V54.6
+                            C340.9,24.6,316.3,0,286.4,0L286.4,0z M327.3,286.4c0,22.4-18.6,40.9-40.9,40.9H54.6c-22.4,0-40.9-18.6-40.9-40.9V49.6
+                            c0-19.7,16.3-36,36-36h237.1c22.3,0,40.9,18.6,40.9,40.9L327.3,286.4z M327.3,286.4"/>
+                    </g>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Loading Metrics & Boot Elements -->
+            <div id="loader-progress-group" class="space-y-2 transition-all duration-500">
+                <div class="flex items-center justify-between text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+                    <span>INITIALIZING DESIGN ENVIRONMENT</span>
+                    <span id="loading-pct">0%</span>
+                </div>
+                <!-- Precise Progress Bar -->
+                <div class="w-full h-[1px] bg-white/10 overflow-hidden relative">
+                    <div id="loading-progress" class="absolute top-0 bottom-0 left-0 bg-gradient-to-r from-[#818cf8] to-[#c084fc] w-0 transition-all duration-100"></div>
+                </div>
+            </div>
+
+            <!-- Interactive Enter Button (Unlocked on 100% Progress) -->
+            <div id="enter-container" class="opacity-0 scale-95 transition-all duration-500 hidden justify-center">
+                <button id="enter-btn" class="px-8 py-4 bg-brand-accent/10 border border-brand-accent/30 text-brand-accent hover:border-brand-accent hover:bg-brand-accent/20 font-mono text-xs tracking-widest uppercase transition-all duration-300 rounded-full cursor-pointer shadow-[0_0_30px_rgba(129,140,248,0.25)]">
+                    Enter Experience
+                </button>
+            </div>
+
+            <!-- Dynamic Boot Log Statements -->
+            <p id="loading-log" class="font-mono text-[9px] text-[#818cf8]/80 uppercase tracking-wider h-4 overflow-hidden">
+                // MOUNTING COMPONENT TOKENS...
+            </p>
+        </div>
+        <!-- Decorative subtle grid dots inside loading screen -->
+        <div class="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(#1e293b_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+    </div>
+
+    <!-- ================= DESIGNER ENVIRONMENTAL BACKGROUND SYSTEM ================= -->
+    <!-- Ambient color glows that slowly drift with dynamic scroll positions -->
+    <div id="bg-blob-1" class="fixed top-[-15%] left-[-10%] w-[65vw] h-[65vw] bg-brand-accent/5 rounded-full filter blur-[150px] pointer-events-none z-0 orb-drift-1"></div>
+    <div id="bg-blob-2" class="fixed bottom-[-15%] right-[-10%] w-[65vw] h-[65vw] bg-brand-purple/5 rounded-full filter blur-[160px] pointer-events-none z-0 orb-drift-2"></div>
+    <div id="bg-blob-3" class="fixed top-[35%] left-[25%] w-[40vw] h-[40vw] bg-brand-mint/3 rounded-full filter blur-[130px] pointer-events-none z-0 orb-drift-3"></div>
+
+    <!-- Floating parallax atmospheric gradient circle (Global Visual Depth) -->
+    <div id="gradient-drift-blob" class="fixed top-1/3 left-1/3 w-[30vw] h-[30vw] bg-brand-accent/3 rounded-full filter blur-[120px] pointer-events-none z-0 transition-transform duration-1000 ease-out"></div>
+
+    <!-- ================= 3D CYCLORAMA ARCHITECTURAL MESH SYSTEM ================= -->
+    <!-- Responsive backdrop grid duplicating 77646068_SL-072622-51930-20.jpg coordinates -->
+    <!-- Configured to morph: Roof (Top) -> Wall (Middle) -> Floor (Bottom) -->
+    <div class="cyc-grid-container" aria-hidden="true">
+        <div id="cyc-mesh" class="cyc-grid-mesh"></div>
+    </div>
+    
+    <canvas id="neural-canvas" class="fixed inset-0 z-1 pointer-events-none opacity-20"></canvas>
+
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="absolute -top-12 left-4 z-50 bg-white text-black px-4 py-2 text-xs font-mono font-bold transition-all focus:top-4 focus:outline-none">
+        Skip to main content
+    </a>
+
+    <!-- ================= APPLE-INSPIRED LIQUID GLASS NAVIGATION BAR ================= -->
+    <header class="fixed top-5 left-1/2 -translate-x-1/2 w-[92%] max-w-5xl z-[90] rounded-full border border-white/10 bg-brand-black/40 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-500">
+        <div class="px-6 py-3.5 flex items-center justify-between">
+            
+            <a href="#" class="flex items-center space-x-3 group accessible-focus" aria-label="Huzaifa Salim Home">
+                <!-- Custom Adobe Illustrator Logo Integration -->
+                <div class="w-8 h-8 rounded-lg border border-white/10 group-hover:border-brand-accent transition-all duration-300 flex items-center justify-center bg-brand-dark/50 overflow-hidden p-1">
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                         viewBox="0 0 340.9 340.9" style="enable-background:new 0 0 340.9 340.9; width: 100%; height: 100%;" xml:space="preserve">
+                    <style type="text/css">
+                        .st0{display:none;}
+                        .st1{display:inline;}
+                        .st2{display:inline;clip-path:url(#SVGID_2_);fill:#010C80;}
+                        .st3{display:inline;clip-path:url(#SVGID_4_);fill:#010C80;}
+                        .st4{display:none;fill:#010C80;}
+                        .st5{clip-path:url(#SVGID_6_);fill:#FFFFFF;}
+                    </style>
+                    <g>
+                        <path class="st5" d="M304.9,234.5c-2.7-1.5-6.1-1.1-8,1.1c-2.3,2.3-1.9,4.5-2.7,7.2c-3.4,12.5-21.6,13.6-26.5,1.5V85.6l25.8-26.1
+                            c3-3,2.7-8-0.8-10.2c-2.7-1.9-5.3-1.1-8-0.8c-5.7,0.8-11.7,0-17.4-0.4c-7.6-0.8-14.8-2.3-22-3.8c-5.3-1.1-14.4-5.7-18.6-0.8
+                            l-28.8,34.8c-3.4,4.5-0.4,11,5.3,11h2.7v34.1h-41.7V88.6l26.9-36.7c3.8-5.3-1.9-12.9-8-10.2c-1.9,0.8-3.8,2.6-5.3,4.2
+                            c-8,6.1-17.4,9.9-27.7,9.5c-7.2-0.4-14-2.7-20.8-4.2c-6.4-1.5-13.3-2.7-19.7-4.2c-8-1.5-15.9-3-24.2-4.2
+                            C67.4,39,51.9,44.3,41.7,57.6c-9.5,12.1-11.4,29.2-4.5,43.6c6.4,13.6,20.5,23.1,36,23.9c3.8,0,9.8,0.4,13.3-2.3
+                            c3-2.3,3.4-6.8,1.1-9.5c-3.4-3.4-8-3.4-11-6.4c-2.7-2.3-4.5-5.7-4.9-9.5c-0.8-7.6,4.2-15.2,11.7-16.7c8-1.9,15.9,2.7,18.2,10.2v33
+                            c-14.4,2.7-23.9,14-25.8,28.4c-0.4,3.4-1.1,7.6,1.5,10.6c2.3,2.3,5.7,2.7,8.3,1.1c4.9-2.7,10.2-4.5,15.5-5.3v8
+                            c-14.4,2.7-23.9,14-25.8,28.4c-0.4,3.4-1.1,7.6,1.5,10.6c2.3,2.3,5.7,2.7,8.3,1.1c4.9-2.7,10.2-4.5,15.5-5.3v22
+                            c-8.7,1.9-16.7,4.9-24.6,9.5c-14,8-25.8,19.7-33.7,33.7c-2.3,3.8-3.8,7.6-5.3,11.4c-1.1,3.4-3.4,7.2-1.5,11
+                            c5.3,9.8,15.9-3.4,20.8-6.4c15.2-10.2,33.7-14.8,51.9-12.1c9.1,1.1,18.2,4.2,26.1,8.7c4.2,2.3,8.3,5.3,11.7,8.3
+                            c3,2.7,7.2,4.9,11,1.5l29.2-25c8-6.4-0.8-14-4.9-17.8c-5.3-4.9-11.4-9.5-17.4-13.3v-53.4h41.7V244c0,28,28.4,48.9,54.2,48.9
+                            c23.9,0,44.7-17.8,48.1-41.3C308.7,246.2,310.2,237.5,304.9,234.5L304.9,234.5z M244,275.8c-12.9-5.3-24.6-17-24.6-31.8v-71.2
+                            c0-3.8-3-6.8-6.8-6.8h-55.3c-3.8,0-6.8,3-6.8,6.8v64.4c0,5.7,6.8,7.6,10.6,10.2c4.5,3,8.7,6.4,12.5,10.2l-20.1,17
+                            C127.7,254.2,90.9,250,61,264.4c6.8-9.1,15.9-16.7,26.1-21.6c5.3-2.7,11-4.5,16.7-6.1c4.9-1.1,11.4-1.5,11-8V194
+                            c0.4-11.4-17.8-6.4-23.9-4.5c3-6.4,9.9-9.8,16.7-9.8c4.2,0.4,7.2-3,7.2-7.2v-20.8c0.4-11.4-17.8-6.4-23.9-4.5
+                            c1.9-4.2,5.3-7.2,9.9-8.7c2.3-0.8,4.5-0.8,7.2-1.1c3.8,0.4,7.2-3,7.2-6.8V90.2c0-7.2-6.8-15.2-12.5-18.6
+                            c-6.8-4.5-15.5-5.7-23.1-3.8c-17,4.5-26.1,23.9-19.3,39.8c-12.9-7.6-18.2-24.2-11-37.5c3-5.7,8-10.2,14-12.9
+                            c6.4-2.7,12.5-1.9,19.3-0.8c10.2,1.5,20.5,3.4,30.3,5.7c15.9,3,33,9.9,49.2,6.1l-11,15.2c-0.8,1.1-1.1,2.7-1.1,4.2v43.9
+                            c0,3.8,3,6.8,6.8,6.8h55.3c3.8,0,6.8-3,6.8-6.8V83c0-2.3-1.1-4.2-3-5.7l17.8-21.6c7.6,1.9,23.5,5.7,37.5,6.4L255.7,78
+                            c-1.1,1.5-1.9,3-1.9,4.9v162.5c0,6.4,6.4,13.3,11.4,16.7c6.4,4.2,14,5.3,21.6,3.8C276.5,278.8,259.1,281.8,244,275.8L244,275.8z
+                             M39.4,209.9c-3.8,0-6.8-3-6.8-6.8v-49.6c0-3.8,3-6.8,6.8-6.8c3.8,0,6.8,3,6.8,6.8V203C46.2,206.8,43.2,209.9,39.4,209.9
+                            L39.4,209.9z M128.4,306.8c-1.5,3.4-5.3,5.3-8.7,3.8c-13.6-5.3-29.2-5.3-42.8,0.4c-0.8,0.4-1.9,0.4-2.7,0.4
+                            c-2.6,0-5.3-1.5-6.4-4.2c-1.5-3.4,0.4-7.6,3.8-9.1c16.7-6.8,36-7.2,52.7-0.4C128,299.6,129.9,303.4,128.4,306.8L128.4,306.8z
+                             M297.7,89.4c3.8,0,6.8,3,6.8,6.8V203c0,3.8-3,6.8-6.8,6.8s-6.8-3-6.8-6.8V96.2C290.9,92.4,294,89.4,297.7,89.4L297.7,89.4z
+                             M286.4,0H49.6C22.4,0,0,22.4,0,49.6v237.1c0,29.5,24.6,54.2,54.6,54.2h232.2c29.5,0,54.2-24.6,54.2-54.6V54.6
+                            C340.9,24.6,316.3,0,286.4,0L286.4,0z M327.3,286.4c0,22.4-18.6,40.9-40.9,40.9H54.6c-22.4,0-40.9-18.6-40.9-40.9V49.6
+                            c0-19.7,16.3-36,36-36h237.1c22.3,0,40.9,18.6,40.9,40.9L327.3,286.4z M327.3,286.4"/>
+                    </g>
+                    </svg>
+                </div>
+                <span class="font-mono text-xs uppercase tracking-widest text-white leading-none">Portfolio</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex space-x-8 font-mono text-[10px] tracking-widest text-brand-slate uppercase" aria-label="Primary Navigation">
+                <a href="#projects" class="hover:text-white transition-colors accessible-focus" onclick="triggerTactileSound()">Works</a>
+                <a href="#certifications" class="hover:text-white transition-colors accessible-focus" onclick="triggerTactileSound()">Skillsets</a>
+                <a href="#experience" class="hover:text-white transition-colors accessible-focus" onclick="triggerTactileSound()">Experience</a>
+                <a href="#contact" class="hover:text-white transition-colors accessible-focus" onclick="triggerTactileSound()">Contact</a>
+            </nav>
+
+            <!-- Navbar CTA: Redirects to the Resume compiler download directly -->
+            <button onclick="triggerResumeCompilation()" class="px-5 py-1.5 bg-white/5 border border-white/10 text-white font-mono text-[9px] sm:text-[10px] tracking-widest uppercase hover:border-brand-accent hover:bg-brand-accent/5 transition-all duration-300 accessible-focus rounded-full text-center" aria-label="Compile and download resume">
+                Resume ⬇
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container - Optimized with broader maximum bounds for rich adaptive layouts -->
+    <main id="main-content" class="relative z-10 max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-8 md:px-12 space-y-20 md:space-y-32 pt-28 sm:pt-36">
+
+        <!-- ================= HERO SECTION ================= -->
+        <section id="hero" class="min-h-[70vh] flex flex-col justify-center relative scroll-reveal">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-7 space-y-6 max-w-2xl">
+                    <div class="space-y-1">
+                        <span class="block font-mono text-zinc-500 text-xs tracking-widest uppercase">// Product Thinker &amp; Architect //</span>
+                        <h1 class="text-5xl sm:text-7xl font-display font-black tracking-tight text-white leading-none">
+                            Huzaifa <br/>Salim
+                        </h1>
+                    </div>
+
+                    <p class="text-base sm:text-lg text-zinc-400 leading-relaxed font-normal">
+                        I design products at the intersection of user needs, business strategy, and AI-augmented thinking—from research to shipped interfaces, end to end. Built through discipline, refined through design.
+                    </p>
+
+                    <!-- Professional Status Chips -->
+                    <div class="flex flex-wrap gap-2.5 pt-2">
+                        <span class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-brand-accent/5 border border-brand-accent/15 text-brand-accent text-xs font-medium rounded-full transition-colors hover:bg-brand-accent/10">
+                            <span>📍</span> <span class="font-mono tracking-wide">Based in Kolkata</span>
+                        </span>
+                        <span class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-brand-mint/5 border border-brand-mint/15 text-brand-mint text-xs font-medium rounded-full transition-colors hover:bg-brand-mint/10">
+                            <span>🌍</span> <span class="font-mono tracking-wide">Open to Remote</span>
+                        </span>
+                        <span class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-brand-purple/5 border border-brand-purple/15 text-brand-purple text-xs font-medium rounded-full transition-colors hover:bg-brand-purple/10">
+                            <span>🤝</span> <span class="font-mono tracking-wide">Open to Hybrid</span>
+                        </span>
+                        <span class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-amber-500/5 border border-amber-500/15 text-amber-400 text-xs font-medium rounded-full transition-colors hover:bg-amber-500/10">
+                            <span>🚀</span> <span class="font-mono tracking-wide">3+ Years Experience</span>
+                        </span>
+                    </div>
+
+                    <!-- Only Two Primary CTAs allowed in the Hero section -->
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                        <a href="#projects" class="group tactile-btn px-8 py-4 bg-white text-brand-black font-mono font-bold text-xs tracking-widest uppercase hover:bg-zinc-200 flex items-center justify-center space-x-3 accessible-focus min-h-[48px] rounded-full" onclick="triggerTactileSound(); triggerHapticFeedback();">
+                            <span>View Work</span>
+                            <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 text-brand-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                        <button onclick="copyEmailToClipboard()" class="tactile-btn px-8 py-4 border border-white/10 text-zinc-300 font-mono text-xs tracking-widest uppercase hover:border-white hover:text-white flex items-center justify-center accessible-focus min-h-[48px] rounded-full" onclick="triggerTactileSound(); triggerHapticFeedback();">
+                            Copy Email 📋
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Custom 3D Layered Figma Work-Desk Parallax Illustration -->
+                <div class="lg:col-span-5 relative w-full h-[360px] sm:h-[420px] flex items-center justify-center tilt-container" id="parallax-scene" aria-hidden="true">
+                    
+                    <!-- Frame 1: Core App Canvas Base -->
+                    <div class="absolute w-[85%] h-[240px] bg-brand-dark/95 border border-white/10 p-4 shadow-2xl rounded-lg tilt-card flex flex-col justify-between" id="card-layer-1" style="transform: rotateX(10deg) rotateY(-15deg) translateZ(10px)">
+                        <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                            <div class="flex items-center space-x-1.5">
+                                <span class="w-2 h-2 rounded-full bg-red-500/60"></span>
+                                <span class="w-2 h-2 rounded-full bg-yellow-500/60"></span>
+                                <span class="w-2 h-2 rounded-full bg-brand-mint/60"></span>
+                            </div>
+                            <span class="font-mono text-[8px] text-zinc-500">Customer flow.fig</span>
+                        </div>
+                        <div class="space-y-2 py-4">
+                            <div class="h-4 bg-brand-accent/15 w-2/3 rounded"></div>
+                            <div class="h-2 bg-white/5 w-full rounded"></div>
+                            <div class="h-2 bg-white/5 w-5/6 rounded"></div>
+                        </div>
+                        <div class="flex justify-between items-center text-[8px] font-mono text-zinc-500">
+                            <span>GRID: active</span>
+                            <span>Scale: 100%</span>
+                        </div>
+                    </div>
+
+                    <!-- Frame 2: Floating design component overlay -->
+                    <div class="absolute w-[55%] h-[110px] bg-[#111116] border border-brand-accent/45 p-3 shadow-2xl rounded-md tilt-card flex flex-col justify-between" id="card-layer-2" style="transform: rotateX(10deg) rotateY(-15deg) translateZ(50px) translate(-30px, 40px)">
+                        <div class="flex justify-between items-center text-[8px] font-mono text-brand-accent font-bold">
+                            <span>⚙️ Button component</span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-mint"></span>
+                        </div>
+                        <div class="w-full py-2 flex justify-center">
+                            <div class="px-4 py-2 border border-brand-accent bg-brand-accent/10 rounded-full font-mono text-[8px] text-brand-accent text-center">
+                                Tap Comms
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Frame 3: Design token card overlay -->
+                    <div class="absolute w-[50%] h-[90px] bg-[#14141d] border border-brand-purple/45 p-3 shadow-2xl rounded-md tilt-card flex flex-col justify-between" id="card-layer-3" style="transform: rotateX(10deg) rotateY(-15deg) translateZ(80px) translate(60px, -60px)">
+                        <span class="font-mono text-[8px] text-zinc-500 block">/* Design Tokens */</span>
+                        <div class="space-y-1">
+                            <span class="block font-mono text-[9px] text-white font-semibold">Primary Accent</span>
+                            <span class="block font-mono text-[8px] text-purple-300">#818cf8 // indigo</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PREMIUM CONTINUOUS TOOLS MARQUEE ================= -->
+        <!-- Decoupled from scroll-reveal translations to ensure absolute full-width coverage on all screens -->
+        <div class="scroll-reveal">
+            <div class="w-screen relative left-1/2 -translate-x-1/2 bg-brand-dark/80 border-t border-b border-brand-border py-4 overflow-hidden select-none">
+                <div class="marquee-track flex items-center space-x-12 font-mono text-[11px] tracking-widest text-brand-slate uppercase">
+                    <span>Design //</span>
+                    <span>Product Design //</span>
+                    <span>Interaction Design //</span>
+                    <span>UI Design //</span>
+                    <span>UX Design //</span>
+                    <span>Development //</span>
+                    <span>HTML //</span>
+                    <span>CSS //</span>
+                    <span>VS Code //</span>
+                    <span>AI &amp; Tools //</span>
+                    <span>Figma //</span>
+                    <span>AI Tools //</span>
+                    <span>Adobe Illustrator //</span>
+                    <span>Adobe Photoshop //</span>
+                    <span>After Effects //</span>
+                    <span>Soft Skills //</span>
+                    <span>Team Management //</span>
+                    <span>Adaptability //</span>
+                    <span>Problem Solving //</span>
+                    <!-- Duplicate for gapless infinite scroll flow -->
+                    <span>Design //</span>
+                    <span>Product Design //</span>
+                    <span>Interaction Design //</span>
+                    <span>UI Design //</span>
+                    <span>UX Design //</span>
+                    <span>Development //</span>
+                    <span>HTML //</span>
+                    <span>CSS //</span>
+                    <span>VS Code //</span>
+                    <span>AI &amp; Tools //</span>
+                    <span>Figma //</span>
+                    <span>AI Tools //</span>
+                    <span>Adobe Illustrator //</span>
+                    <span>Adobe Photoshop //</span>
+                    <span>After Effects //</span>
+                    <span>Soft Skills //</span>
+                    <span>Team Management //</span>
+                    <span>Adaptability //</span>
+                    <span>Problem Solving //</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= -SUPERPOWER & -CERTIFICATION SECTION ================= -->
+        <section id="certifications" class="py-12 border-t border-brand-border scroll-reveal">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch">
+                <!-- Left Column: Unified Skillset Block -->
+                <div class="lg:col-span-6 flex flex-col justify-between space-y-4 h-full">
+                    <div>
+                        <span class="font-mono text-[10px] tracking-widest text-brand-accent uppercase block mb-1 font-semibold">-SUPERPOWER</span>
+                        <h3 class="text-3xl font-display font-bold tracking-tight text-white">Skillsets</h3>
+                    </div>
+                    <!-- CSS Grid stretching to secure exact equal heights -->
+                    <div class="grid grid-cols-2 gap-4 flex-1 h-full items-stretch">
+                        <div class="bg-brand-dark/40 border border-white/5 p-4 rounded-xl flex flex-col justify-between h-full min-h-[110px] group hover:border-brand-accent/30 transition-all duration-300">
+                            <span class="text-xs font-mono text-brand-accent">// 01</span>
+                            <span class="text-sm font-bold text-white uppercase tracking-wider">UI/UX Design</span>
+                        </div>
+                        <div class="bg-brand-dark/40 border border-white/5 p-4 rounded-xl flex flex-col justify-between h-full min-h-[110px] group hover:border-brand-purple/30 transition-all duration-300">
+                            <span class="text-xs font-mono text-brand-purple">// 02</span>
+                            <span class="text-sm font-bold text-white uppercase tracking-wider">No-Code</span>
+                        </div>
+                        <div class="bg-brand-dark/40 border border-white/5 p-4 rounded-xl flex flex-col justify-between h-full min-h-[110px] group hover:border-brand-mint/30 transition-all duration-300">
+                            <span class="text-xs font-mono text-brand-mint">// 03</span>
+                            <span class="text-sm font-bold text-white uppercase tracking-wider">Graphic Design</span>
+                        </div>
+                        <div class="bg-brand-dark/40 border border-white/5 p-4 rounded-xl flex flex-col justify-between h-full min-h-[110px] group hover:white/20 transition-all duration-300">
+                            <span class="text-xs font-mono text-zinc-400">// 04</span>
+                            <span class="text-sm font-bold text-white uppercase tracking-wider">Frontend Dev</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Symmetrical Credentials Column (Perfect Height Alignment & Tightened Mobile Padding) -->
+                <div class="lg:col-span-6 flex flex-col justify-between space-y-4 h-full">
+                    <div>
+                        <span class="font-mono text-[10px] tracking-widest text-brand-purple uppercase block mb-1 font-semibold">-CERTIFICATION</span>
+                        <h3 class="text-3xl font-display font-bold tracking-tight text-white">Credentials</h3>
+                    </div>
+                    <!-- Equal height credentials cards, using flex-1 with grid structure matching Skillsets -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 h-full items-stretch">
+                        <!-- Card 1: IIT Guwahati -->
+                        <div class="bg-[#0e0e12] border border-white/5 p-4 sm:p-5 rounded-xl flex flex-col justify-between h-full min-h-[160px] md:min-h-[236px] group hover:border-brand-accent/40 transition-all duration-300">
+                            <div class="flex justify-between items-start">
+                                <span class="font-mono text-[9px] px-2 py-0.5 bg-[#E63946]/15 text-[#E63946] border border-[#E63946]/20 uppercase font-bold rounded">IITG Alum</span>
+                                <span class="text-zinc-500 text-[10px] font-mono">2023</span>
+                            </div>
+                            <div class="mt-4 space-y-1">
+                                <h4 class="text-sm sm:text-base font-bold text-white group-hover:text-brand-accent transition-colors leading-tight">Advanced Diploma in UI UX Design Strategy</h4>
+                                <span class="block text-[11px] sm:text-xs text-zinc-500 font-medium">IIT Guwahati</span>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Accenture -->
+                        <div class="bg-[#0e0e12] border border-white/5 p-4 sm:p-5 rounded-xl flex flex-col justify-between h-full min-h-[160px] md:min-h-[236px] group hover:border-brand-purple/40 transition-all duration-300">
+                            <div class="flex justify-between items-start">
+                                <span class="font-mono text-[9px] px-2 py-0.5 bg-brand-purple/15 text-purple-300 border border-brand-purple/20 uppercase font-bold rounded">Accenture</span>
+                                <span class="text-zinc-500 text-[10px] font-mono">2023</span>
+                            </div>
+                            <div class="mt-4 space-y-1">
+                                <h4 class="text-sm sm:text-base font-bold text-white group-hover:text-brand-purple transition-colors leading-tight">Digital Skills: User Experience</h4>
+                                <span class="block text-[11px] sm:text-xs text-zinc-500 font-medium">Accenture</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= -SELECTED WORKS BENTO GRID ================= -->
+        <!-- Redesigned: FairDrive spans full-width, FileSure and Lyft in equal columns below -->
+        <section id="projects" class="py-12 border-t border-brand-border scroll-reveal">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <span class="font-mono text-[10px] tracking-widest text-brand-accent uppercase block mb-1 font-semibold">-SELECTED WORKS</span>
+                    <h3 class="text-3xl sm:text-4xl font-display font-black tracking-tight text-white">Works that shipped</h3>
+                </div>
+            </div>
+
+            <!-- Bento Layout Matrix: Row 1 = full width; Row 2 = two symmetric columns -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                <!-- Card 1: FairDrive (Flagship Project: Displays as FULL-WIDTH horizontal card spanning the entire row) -->
+                <div class="lg:col-span-2 border border-white/5 bg-[#0e0e12] p-6 sm:p-8 flex flex-col justify-between transition-all duration-500 hover:border-brand-accent/35 hover:bg-brand-card/30 group relative overflow-hidden rounded-2xl scroll-reveal">
+                    <div>
+                        <!-- High Contrast Blueprint Container -->
+                        <div class="h-64 sm:h-80 w-full bg-[#07070a] border border-white/5 rounded-xl mb-6 relative overflow-hidden flex items-center justify-center group-hover:border-brand-accent/20 transition-all duration-300">
+                            <!-- Technical Grid Overlay background -->
+                            <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:16px_16px]"></div>
+                            <svg class="w-11/12 h-5/6 opacity-80 z-10" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="2" y="2" width="96" height="76" rx="6" fill="#0c0c10" stroke="#1c1c24" stroke-width="1"/>
+                                <path d="M10 55 C 30 20, 60 70, 90 25" stroke="#818cf8" stroke-width="1.5" stroke-dasharray="2 3"/>
+                                <circle cx="50" cy="46" r="4.5" fill="#34d399" class="animate-pulse"/>
+                                <text x="12" y="15" fill="#818cf8" font-size="5" font-family="monospace">DRIVER_ROUTE_01</text>
+                            </svg>
+                        </div>
+
+                        <!-- Card Meta Info -->
+                        <span class="font-mono text-[9px] text-zinc-500 tracking-wider uppercase block mb-1.5">FLAGSHIP · MOBILITY · BANGLADESH MARKET · 0 → 1</span>
+                        <h4 class="text-2xl sm:text-3xl font-display font-bold text-white group-hover:text-brand-accent transition-colors leading-tight mb-4">FairDrive — Designing a Fairer Mobility Ecosystem</h4>
+
+                        <!-- Impact Metrics Dashboard (Highly spacious layout) -->
+                        <div class="mt-4 pt-6 border-t border-white/5 mb-6">
+                            <span class="font-mono text-[9px] tracking-wider text-brand-mint uppercase block mb-4 font-semibold">- IMPACT</span>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-left">
+                                <div class="bg-brand-black/40 p-4 rounded-xl border border-white/5">
+                                    <span class="block text-2xl sm:text-3xl font-black text-white font-mono leading-none mb-1">3</span>
+                                    <span class="block text-[10px] text-zinc-400 leading-snug">Products shipped as sole designer</span>
+                                </div>
+                                <div class="bg-brand-black/40 p-4 rounded-xl border border-white/5">
+                                    <span class="block text-2xl sm:text-3xl font-black text-white font-mono leading-none mb-1">0→1</span>
+                                    <span class="block text-[10px] text-zinc-400 leading-snug">Full marketplace built to launch</span>
+                                </div>
+                                <div class="bg-brand-black/40 p-4 rounded-xl border border-white/5">
+                                    <span class="block text-2xl sm:text-3xl font-black text-white font-mono leading-none mb-1">100%</span>
+                                    <span class="block text-[10px] text-zinc-400 leading-snug">End-to-end user ownership</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 mt-auto border-t border-white/5 flex items-center justify-between gap-4">
+                        <button onclick="openCaseStudy('fairdrive')" class="text-xs font-mono text-white hover:text-brand-accent transition-colors flex items-center space-x-1 min-h-[44px] cursor-pointer accessible-focus">
+                            <span>View Details</span>
+                        </button>
+                        <a href="https://figma.com" target="_blank" class="text-xs font-mono text-zinc-500 hover:text-brand-accent transition-colors flex items-center space-x-1 min-h-[44px] cursor-pointer accessible-focus">
+                            <span>Open Figma ↗</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 2: FileSure (Displays as 1 of 2 equal columns on bottom row) -->
+                <div class="lg:col-span-1 border border-white/5 bg-[#0e0e12] p-6 flex flex-col justify-between transition-all duration-500 hover:border-brand-purple/35 hover:bg-brand-card/30 group relative overflow-hidden rounded-2xl scroll-reveal">
+                    <div>
+                        <!-- Embedded Glowing Blueprint Block -->
+                        <div class="h-56 w-full bg-[#07070a] border border-white/5 rounded-xl mb-6 relative overflow-hidden flex items-center justify-center group-hover:border-brand-purple/20 transition-all duration-300">
+                            <!-- Technical Grid Overlay background -->
+                            <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:16px_16px]"></div>
+                            <svg class="w-11/12 h-5/6 opacity-80 z-10" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="2" y="2" width="96" height="76" rx="6" fill="#0c0c10" stroke="#1c1c24" stroke-width="1"/>
+                                <rect x="54" y="10" width="38" height="26" rx="3" fill="#111116" stroke="#c084fc" stroke-width="0.75"/>
+                                <line x1="14" y1="52" x2="68" y2="52" stroke="#c084fc" stroke-width="1"/>
+                                <text x="12" y="24" fill="#64748b" font-size="4" font-family="monospace">ROC_INDEX</text>
+                            </svg>
+                        </div>
+
+                        <!-- Card Meta Header Tags -->
+                        <span class="font-mono text-[9px] text-zinc-500 tracking-wider uppercase block mb-1.5">ENTERPRISE · B2B · SaaS · REGISTRY</span>
+                        <h4 class="text-xl font-display font-bold text-white group-hover:text-brand-purple transition-colors leading-tight mb-4">FileSure — Streamlining MCA Audits</h4>
+
+                        <!-- Impact Metrics Column -->
+                        <div class="mt-4 pt-6 border-t border-white/5 mb-6">
+                            <span class="font-mono text-[9px] tracking-wider text-brand-purple uppercase block mb-4 font-semibold">- IMPACT</span>
+                            <div class="grid grid-cols-2 gap-3 text-left">
+                                <div class="bg-brand-black/40 p-3 rounded-lg border border-white/5">
+                                    <span class="block text-xl font-black text-white font-mono leading-none mb-0.5">45%</span>
+                                    <span class="block text-[8px] text-zinc-500 leading-tight">Query search optimize</span>
+                                </div>
+                                <div class="bg-brand-black/40 p-3 rounded-lg border border-white/5">
+                                    <span class="block text-xl font-black text-white font-mono leading-none mb-0.5">Unified</span>
+                                    <span class="block text-[8px] text-zinc-500 leading-tight">Filing dashboards</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 mt-auto border-t border-white/5 flex items-center justify-between gap-4">
+                        <button onclick="openCaseStudy('filesure')" class="text-xs font-mono text-white hover:text-brand-purple transition-colors flex items-center space-x-1 min-h-[44px] cursor-pointer accessible-focus">
+                            <span>View Details</span>
+                        </button>
+                        <a href="https://figma.com" target="_blank" class="text-xs font-mono text-zinc-500 hover:text-brand-purple transition-colors flex items-center space-x-1 min-h-[44px] cursor-pointer accessible-focus">
+                            <span>Open Figma ↗</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 3: Lyft India (Displays as 2 of 2 equal columns on bottom row) -->
+                <div class="lg:col-span-1 border border-white/5 bg-[#0e0e12] p-6 flex flex-col justify-between transition-all duration-500 hover:border-brand-mint/35 hover:bg-brand-card/30 group relative overflow-hidden rounded-2xl scroll-reveal">
+                    <div>
+                        <!-- Embedded Glowing Blueprint Block -->
+                        <div class="h-56 w-full bg-[#07070a] border border-white/5 rounded-xl mb-6 relative overflow-hidden flex items-center justify-center group-hover:border-brand-mint/20 transition-all duration-300">
+                            <!-- Technical Grid Overlay background -->
+                            <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:16px_16px]"></div>
+                            <svg class="w-11/12 h-5/6 opacity-80 z-10" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="2" y="2" width="96" height="76" rx="6" fill="#0c0c10" stroke="#1c1c24" stroke-width="1"/>
+                                <rect x="36" y="8" width="28" height="64" rx="4" fill="#111116" stroke="#34d399" stroke-width="1"/>
+                                <circle cx="50" cy="14" r="2" fill="#34d399"/>
+                                <text x="12" y="15" fill="#64748b" font-size="4" font-family="monospace">LYFT_MOCK</text>
+                            </svg>
+                        </div>
+
+                        <!-- Card Meta Header Tags -->
+                        <span class="font-mono text-[9px] text-zinc-500 tracking-wider uppercase block mb-1.5">METROPOLITAN · BIKE HAILING · UX CHECKOUT</span>
+                        <h4 class="text-xl font-display font-bold text-white group-hover:text-brand-mint transition-colors leading-tight mb-4">Lyft India — Re-engineering Cab Booking</h4>
+
+                        <!-- Impact Metrics Column -->
+                        <div class="mt-4 pt-6 border-t border-white/5 mb-6">
+                            <span class="font-mono text-[9px] tracking-wider text-brand-mint uppercase block mb-4 font-semibold">- IMPACT</span>
+                            <div class="grid grid-cols-2 gap-3 text-left">
+                                <div class="bg-brand-black/40 p-3 rounded-lg border border-white/5">
+                                    <span class="block text-xl font-black text-white font-mono leading-none mb-0.5">+18%</span>
+                                    <span class="block text-[8px] text-zinc-500 leading-tight">Checkout conversion boost</span>
+                                </div>
+                                <div class="bg-brand-black/40 p-3 rounded-lg border border-white/5">
+                                    <span class="block text-xl font-black text-white font-mono leading-none mb-0.5">Taxi</span>
+                                    <span class="block text-[8px] text-zinc-500 leading-tight">Optimized booking lanes</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 mt-auto border-t border-white/5 flex items-center justify-between gap-4">
+                        <button onclick="openCaseStudy('lyftindia')" class="text-xs font-mono text-white hover:text-brand-mint transition-colors flex items-center space-x-1 min-h-[44px] cursor-pointer accessible-focus">
+                            <span>View Details</span>
+                        </button>
+                        <a href="https://figma.com" target="_blank" class="text-xs font-mono text-zinc-500 hover:text-brand-mint transition-colors flex items-center space-x-1 min-h-[44px] cursor-pointer accessible-focus">
+                            <span>Open Figma ↗</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= EXPERIENCE TIMELINE ================= -->
+        <section id="experience" class="py-12 border-t border-brand-border scroll-reveal relative">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16">
+                <div>
+                    <span class="font-mono text-[10px] tracking-widest text-brand-accent uppercase block mb-1 font-semibold">-EXPERIENCE</span>
+                    <h2 class="text-3xl sm:text-4xl font-display font-black tracking-tight text-white">Where I have worked</h2>
+                </div>
+            </div>
+
+            <!-- SVG Timeline Trace Path Line -->
+            <div class="relative max-w-4xl mx-auto py-4">
+                
+                <div class="absolute left-4 sm:left-10 top-0 bottom-0 w-[2px] bg-white/5 z-0">
+                    <div id="active-timeline-indicator" class="w-full bg-brand-accent origin-top transition-transform duration-200 scale-y-0 h-full"></div>
+                </div>
+
+                <!-- Milestone Records -->
+                <div class="space-y-16 pl-12 sm:pl-24 z-10 relative">
+
+                    <!-- Milestone 1: FairDrive -->
+                    <div class="timeline-item relative group" data-node="0">
+                        <div class="timeline-node absolute -left-[44px] sm:-left-[66px] top-1 w-6 h-6 border-2 border-white/10 bg-brand-black flex items-center justify-center transition-all duration-500 group-hover:border-brand-accent z-20">
+                            <div class="timeline-node-inner w-2 h-2 bg-zinc-600 transition-all duration-300"></div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                                <h4 class="text-2xl font-display font-bold text-white group-hover:text-brand-accent transition-colors">Founding Product Designer</h4>
+                                <span class="font-mono text-[10px] px-2.5 py-1 bg-white/5 border border-white/10 text-white inline-block self-start sm:self-auto uppercase font-bold rounded-full">Sep 2024 - Dec 2025</span>
+                            </div>
+                            <p class="font-mono text-xs text-brand-accent font-semibold">FairDrive Bangladesh <span class="text-zinc-600">// Dhaka, BD (Remote)</span></p>
+                            
+                            <div class="p-3.5 bg-white/5 border border-white/10 text-xs text-zinc-300 font-mono leading-relaxed rounded-lg">
+                                ✍ // CONTEXT LOG: Managed design files for FairDrive during dual employment structures mapping regional transportation networks.
+                            </div>
+
+                            <p class="text-zinc-400 text-sm leading-relaxed">
+                                Standardized high outdoor-contrast layout parameters, helping minimize user interface drop rates for regional operations.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 2: Filesure India -->
+                    <div class="timeline-item relative group" data-node="1">
+                        <div class="timeline-node absolute -left-[44px] sm:-left-[66px] top-1 w-6 h-6 border-2 border-white/10 bg-brand-black flex items-center justify-center transition-all duration-500 group-hover:border-brand-purple z-20">
+                            <div class="timeline-node-inner w-2 h-2 bg-zinc-600 transition-all duration-300"></div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                                <h4 class="text-2xl font-display font-bold text-white group-hover:text-brand-purple transition-colors">UI UX Designer</h4>
+                                <span class="font-mono text-[10px] px-2.5 py-1 bg-white/5 border border-white/10 text-white inline-block self-start sm:self-auto uppercase font-bold rounded-full">Sep 2024 - Dec 2025</span>
+                            </div>
+                            <p class="font-mono text-xs text-brand-purple font-semibold">Filesure India Pvt. Ltd. <span class="text-zinc-600">// Mumbai, IN (Remote)</span></p>
+
+                            <p class="text-zinc-400 text-sm leading-relaxed">
+                                Spearheaded B2B corporate aggregation modules, converting complicated registry indexes and statutory tables into clear dashboard tools.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 3: Hittok -->
+                    <div class="timeline-item relative group" data-node="2">
+                        <div class="timeline-node absolute -left-[44px] sm:-left-[66px] top-1 w-6 h-6 border-2 border-white/10 bg-brand-black flex items-center justify-center transition-all duration-500 group-hover:border-brand-slate z-20">
+                            <div class="timeline-node-inner w-2 h-2 bg-zinc-600 transition-all duration-300"></div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                                <h4 class="text-2xl font-display font-bold text-white group-hover:text-brand-slate transition-colors">Graphic &amp; UI UX Designer</h4>
+                                <span class="font-mono text-[10px] px-2.5 py-1 bg-white/5 border border-white/10 text-zinc-400 inline-block self-start sm:self-auto uppercase font-bold rounded-full">Sep 2023 - Aug 2024</span>
+                            </div>
+                            <p class="font-mono text-xs text-brand-slate font-semibold">Hittok Pvt. Ltd. <span class="text-zinc-600">// Kolkata, IN (On-site)</span></p>
+
+                            <p class="text-zinc-400 text-sm leading-relaxed">
+                                Coordinated directly with software development units to accelerate asset deliveries and align interactive styles with branding goals.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 4: Lyft India -->
+                    <div class="timeline-item relative group" data-node="3">
+                        <div class="timeline-node absolute -left-[44px] sm:-left-[66px] top-1 w-6 h-6 border-2 border-white/10 bg-brand-black flex items-center justify-center transition-all duration-500 group-hover:border-brand-mint z-20">
+                            <div class="timeline-node-inner w-2 h-2 bg-zinc-600 transition-all duration-300"></div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                                <h4 class="text-2xl font-display font-bold text-white group-hover:text-brand-mint transition-colors">Graphic &amp; UI Designer</h4>
+                                <span class="font-mono text-[10px] px-2.5 py-1 bg-white/5 border border-white/10 text-zinc-400 inline-block self-start sm:self-auto uppercase font-bold rounded-full">Mar 2023 - Aug 2023</span>
+                            </div>
+                            <p class="font-mono text-xs text-brand-mint font-semibold">Lyft India Online Cab &amp; Bike Services <span class="text-zinc-600">// Kolkata, IN (On-site)</span></p>
+
+                            <p class="text-zinc-400 text-sm leading-relaxed">
+                                Optimize localized application checkouts and produced conversion-focused promotional storefront graphics.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CONTACT SECTION ================= -->
+        <section id="contact" class="py-16 border-t border-brand-border scroll-reveal scroll-mt-24">
+            <div class="max-w-4xl mx-auto text-center space-y-10">
+                <span class="font-mono text-[10px] tracking-widest text-brand-accent uppercase block mb-1 font-semibold">-CONTACT</span>
+                <h3 class="text-4xl sm:text-5xl lg:text-6xl font-display font-black text-white tracking-tight leading-none">I know you like my work</h3>
+                
+                <p class="text-zinc-400 text-sm max-w-xl mx-auto leading-relaxed font-light">
+                    Let's turn ideas into experiences. Open to remote and hybrid opportunities globally.
+                </p>
+
+                <!-- Unified Component System Grid: Email, Resume, Socials in symmetrical round pills -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 pt-4 max-w-4xl mx-auto">
+                    <!-- Symmetrical Click-to-Copy Email Button -->
+                    <button id="copy-btn-unified" onclick="copyEmailToClipboard()" class="tactile-btn flex items-center justify-center gap-2 p-4 bg-[#0e0e12] border border-brand-border hover:border-brand-accent hover:bg-brand-accent/5 rounded-full text-white text-sm font-semibold cursor-pointer" aria-label="Copy email address">
+                        <span>Copy Email 📋</span>
+                    </button>
+                    <!-- LinkedIn Link -->
+                    <a href="https://www.linkedin.com/in/huzaifasalim7/" target="_blank" class="tactile-btn flex items-center justify-center gap-2 p-4 bg-brand-dark border border-brand-border hover:border-brand-accent hover:bg-brand-accent/5 rounded-full text-white text-sm font-semibold cursor-pointer" aria-label="Connect on LinkedIn" onclick="triggerTactileSound(); triggerHapticFeedback();">
+                        <span>LinkedIn ↗</span>
+                    </a>
+                    <!-- WhatsApp Link -->
+                    <a href="https://wa.me/919748154954" target="_blank" class="tactile-btn flex items-center justify-center gap-2 p-4 bg-brand-dark border border-brand-border hover:border-brand-accent hover:bg-brand-accent/5 rounded-full text-white text-sm font-semibold cursor-pointer" aria-label="Connect on WhatsApp" onclick="triggerTactileSound(); triggerHapticFeedback();">
+                        <span>WhatsApp ↗</span>
+                    </a>
+                    <!-- GitHub Link -->
+                    <a href="https://github.com/huzaifalistens-gh" target="_blank" class="tactile-btn flex items-center justify-center gap-2 p-4 bg-brand-dark border border-brand-border hover:border-brand-accent hover:bg-brand-accent/5 rounded-full text-white text-sm font-semibold cursor-pointer" aria-label="Connect on GitHub" onclick="triggerTactileSound(); triggerHapticFeedback();">
+                        <span>GitHub ↗</span>
+                    </a>
+                    <!-- Unified Resume compiling download Button -->
+                    <button onclick="triggerResumeCompilation()" class="tactile-btn flex items-center justify-center gap-2 p-4 bg-brand-dark border border-[#818cf8]/20 hover:border-brand-accent hover:bg-brand-accent/5 rounded-full text-[#818cf8] text-sm font-semibold cursor-pointer" aria-label="Download resume file">
+                        <span>Resume ⬇</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= OVERSIZED ENVIRONMENT NAME SIGNATURE (CLOSING ELEMENT) ================= -->
+        <!-- Placed immediately below Contact section as an Awwwards-inspired bold editorial statement. Spans fully across desktop and scales beautifully. -->
+        <section class="w-screen relative left-1/2 -translate-x-1/2 pt-0 pb-10 md:pb-16 flex items-center justify-center overflow-hidden z-10 pointer-events-none select-none" aria-hidden="true">
+            <div class="text-center w-full px-4">
+                <h2 class="md:hidden font-display font-black text-[15vw] tracking-tight leading-[0.8] uppercase text-transparent bg-clip-text bg-gradient-to-b from-white via-white/45 to-transparent select-none">
+                    HUZAIFA<br/>SALIM
+                </h2>
+                <h2 class="hidden md:block font-display font-black text-[13vw] lg:text-[14vw] tracking-tight sm:tracking-[-0.015em] md:tracking-[-0.025em] uppercase leading-none text-transparent bg-clip-text bg-gradient-to-b from-white via-white/45 to-transparent select-none whitespace-nowrap">
+                    HUZAIFA SALIM
+                </h2>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= SYSTEM CASE STUDY DIALOG WINDOW ================= -->
+    <div id="case-modal" class="fixed inset-0 z-[100] overflow-y-auto hidden bg-brand-black/95 backdrop-blur-md p-4 sm:p-6 flex items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="border border-white/10 bg-brand-dark max-w-4xl w-full max-h-[90vh] overflow-y-auto relative rounded-2xl p-6 sm:p-10 shadow-2xl">
+            <!-- Close Trigger -->
+            <button onclick="closeCaseStudy()" class="absolute top-4 right-4 sm:top-6 sm:right-6 w-11 h-11 border border-white/10 flex items-center justify-center bg-brand-black text-slate-400 hover:text-white hover:border-white transition-all duration-300 accessible-focus rounded-full cursor-pointer" aria-label="Close Case Study">
+                <span class="font-mono text-lg font-bold">✕</span>
+            </button>
+
+            <!-- Dialog Content -->
+            <div id="case-modal-content" class="space-y-6 sm:space-y-8 pr-1">
+                <!-- Data loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Active System Notification Toast / Processing Overlay -->
+    <div id="toast-notification" class="fixed bottom-24 sm:bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-500 pointer-events-none">
+        <div class="bg-brand-dark border border-white/10 px-6 py-4 flex items-center space-x-4 shadow-2xl rounded-xl">
+            <span class="w-2.5 h-2.5 bg-brand-accent animate-ping rounded-full"></span>
+            <div class="font-mono text-[11px]">
+                <p class="text-white font-bold uppercase" id="toast-title">SYSTEM EVENT SYNCED</p>
+                <p class="text-zinc-500" id="toast-msg">Success code logs copied to your system Clipboard.</p>
+                <!-- Interactive Compiling Progress Bar -->
+                <div id="progress-container" class="w-48 h-1 bg-white/10 rounded mt-2 hidden overflow-hidden">
+                    <div id="progress-bar" class="w-0 h-full bg-brand-accent transition-all duration-100"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MOBILE SYSTEM BOTTOM NAVIGATION BAR ================= -->
+    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-brand-dark/95 border-t border-brand-border backdrop-blur-md md:hidden block py-1" aria-label="Mobile Bottom Navigation Bar">
+        <div class="flex justify-around items-center max-w-md mx-auto h-16">
+            <a href="#hero" class="flex flex-col items-center justify-center flex-1 h-full font-mono text-[9px] text-zinc-500 hover:text-white accessible-focus" aria-label="Home Link" onclick="triggerTactileSound()">
+                <span class="text-lg">⌂</span>
+                <span class="mt-0.5">HOME</span>
+            </a>
+            <a href="#projects" class="flex flex-col items-center justify-center flex-1 h-full font-mono text-[9px] text-zinc-500 hover:text-white accessible-focus" aria-label="Projects Link" onclick="triggerTactileSound()">
+                <span class="text-lg">✦</span>
+                <span class="mt-0.5">WORKS</span>
+            </a>
+            <a href="#experience" class="flex flex-col items-center justify-center flex-1 h-full font-mono text-[9px] text-zinc-500 hover:text-white accessible-focus" aria-label="Milestone Link" onclick="triggerTactileSound()">
+                <span class="text-lg">⚿</span>
+                <span class="mt-0.5">ROADMAP</span>
+            </a>
+            <a href="#contact" class="flex flex-col items-center justify-center flex-1 h-full font-mono text-[9px] text-zinc-500 hover:text-white accessible-focus" aria-label="Direct Comms Link" onclick="triggerTactileSound()">
+                <span class="text-lg">✉</span>
+                <span class="mt-0.5">COMMS</span>
+            </a>
+        </div>
+    </nav>
+
+
+    <!-- ================= SYSTEM SCRIPTS ================= -->
+    <script>
+        // ================= QUANTUM EVENT-BASED SOUND SYNTHESIZER =================
+        let audioCtx = null;
+
+        function initAudioContext() {
+            if (audioCtx) return;
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            } catch (e) {
+                console.warn("Web Audio API blocked or not supported on this framework client", e);
+            }
+        }
+
+        // Low volume premium acoustic synthesizer engine
+        function triggerAudio(type) {
+            initAudioContext();
+            if (!audioCtx) return;
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'startup') {
+                // Low-pass warm crescendo swell
+                const osc = audioCtx.createOscillator();
+                const filter = audioCtx.createBiquadFilter();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(80, now);
+                osc.frequency.exponentialRampToValueAtTime(320, now + 1.2);
+
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(220, now);
+
+                gain.gain.setValueAtTime(0.001, now);
+                gain.gain.linearRampToValueAtTime(0.08, now + 0.6);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
+
+                osc.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 1.6);
+            } 
+            else if (type === 'ready') {
+                // Premium operating system booted notification chime
+                const osc1 = audioCtx.createOscillator();
+                const osc2 = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc1.type = 'triangle';
+                osc1.frequency.setValueAtTime(523.25, now); // C5
+                osc1.frequency.exponentialRampToValueAtTime(783.99, now + 0.15); // G5
+
+                osc2.type = 'sine';
+                osc2.frequency.setValueAtTime(659.25, now); // E5
+                osc2.frequency.exponentialRampToValueAtTime(987.77, now + 0.15); // B5
+
+                gain.gain.setValueAtTime(0.001, now);
+                gain.gain.linearRampToValueAtTime(0.05, now + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+
+                osc1.connect(gain);
+                osc2.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc1.start(now);
+                osc2.start(now);
+                osc1.stop(now + 0.9);
+                osc2.stop(now + 0.9);
+            }
+            else if (type === 'node-ping') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(987.77, now); // B5 note - crisp high bell
+
+                gain.gain.setValueAtTime(0.12, now); // Audibly clear and premium acoustic chime
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.30);
+            }
+        }
+
+        function triggerTactileSound() {
+            initAudioContext();
+            if (!audioCtx) return;
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            // OS style micro-tactile crisp tap click
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(1600, now);
+
+            gain.gain.setValueAtTime(0.04, now);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.04);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.05);
+        }
+
+        function triggerWhooshSound() {
+            initAudioContext();
+            if (!audioCtx) return;
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            // Soft mechanical swipe
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(80, now);
+            osc.frequency.exponentialRampToValueAtTime(320, now + 0.12);
+            osc.frequency.exponentialRampToValueAtTime(40, now + 0.4);
+
+            gain.gain.setValueAtTime(0.18, now);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.5);
+        }
+
+        function triggerResumeRocketSound() {
+            initAudioContext();
+            if (!audioCtx) return;
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const filter = audioCtx.createBiquadFilter();
+            const gain = audioCtx.createGain();
+
+            // Spacecraft propulsion synthesis swell
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(45, now);
+            osc.frequency.exponentialRampToValueAtTime(180, now + 0.5);
+            osc.frequency.linearRampToValueAtTime(350, now + 1.2);
+            osc.frequency.exponentialRampToValueAtTime(20, now + 1.9);
+
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(180, now);
+            filter.frequency.exponentialRampToValueAtTime(900, now + 0.8);
+
+            gain.gain.setValueAtTime(0.001, now);
+            gain.gain.linearRampToValueAtTime(0.2, now + 0.5);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 1.95);
+
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(now);
+            osc.stop(now + 2.0);
+        }
+
+        // Speech Synthesis confirmation vocalization handler
+        function speakVoiceFeedback(phrase) {
+            try {
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(phrase);
+                    utterance.rate = 1.05;
+                    utterance.pitch = 1.15;
+                    window.speechSynthesis.speak(utterance);
+                }
+            } catch (err) {
+                console.warn("Speech Synthesis rejected: ", err);
+            }
+        }
+
+        function triggerHapticFeedback() {
+            try {
+                if (navigator.vibrate) {
+                    // Quick tactical premium double impulse vibration
+                    navigator.vibrate([15, 8, 15]);
+                }
+            } catch (err) {
+                // Silently bypass if haptics are not integrated on client system
+            }
+        }
+
+        // ================= OPERATING SYSTEM INITIALIZATION BOOT SYSTEM =================
+        window.addEventListener('DOMContentLoaded', () => {
+            const loadingScreen = document.getElementById('loading-screen');
+            const loadingPct = document.getElementById('loading-pct');
+            const loadingProgress = document.getElementById('loading-progress');
+            const loadingLog = document.getElementById('loading-log');
+            const progressGroup = document.getElementById('loader-progress-group');
+            const enterContainer = document.getElementById('enter-container');
+            const enterBtn = document.getElementById('enter-btn');
+
+            const logMessages = [
+                "// CONNECTING CORE NEURAL PORTALS...",
+                "// INITIALIZING FIGMA COMPOSITIONS...",
+                "// PARALLAX WIREFRAMES INJECTED...",
+                "// CALIBRATING ACOUSTIC FEEDBACK...",
+                "// STYLES & LAYOUT PARAMETERS MOUNTED...",
+                "// ENVIRONMENT STABILIZED. READY."
+            ];
+
+            let progress = 0;
+
+            // 2.5-second loaded state controller
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 4) + 2;
+                if (progress > 100) progress = 100;
+
+                if (loadingPct) {
+                    loadingPct.innerText = `${progress}%`;
+                }
+                if (loadingProgress) {
+                    loadingProgress.style.width = `${progress}%`;
+                }
+
+                // Update visual debugging telemetry logs
+                const logIndex = Math.floor((progress / 100) * (logMessages.length - 1));
+                if (loadingLog) {
+                    loadingLog.innerText = logMessages[logIndex];
+                }
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    
+                    // Smoothly transition loading logs out to present Enter button
+                    setTimeout(() => {
+                        if (progressGroup) {
+                            progressGroup.classList.add('opacity-0', '-translate-y-2');
+                        }
+                        setTimeout(() => {
+                            if (progressGroup) {
+                                progressGroup.classList.add('hidden');
+                            }
+                            if (enterContainer) {
+                                enterContainer.classList.remove('hidden');
+                                // Force hardware render cycle reflow
+                                enterContainer.offsetHeight;
+                                enterContainer.classList.remove('opacity-0', 'scale-95');
+                                enterContainer.classList.add('opacity-100', 'scale-100');
+                            }
+                        }, 400);
+                    }, 300);
+                }
+            }, 60);
+
+            // Verified User Action Handler: Unlocks Web Audio safely
+            if (enterBtn) {
+                enterBtn.addEventListener('click', () => {
+                    initAudioContext();
+                    triggerAudio('ready'); // Plays the boot sequence cleanly!
+                    triggerHapticFeedback();
+
+                    if (loadingScreen) {
+                        loadingScreen.style.opacity = '0';
+                        loadingScreen.style.pointerEvents = 'none';
+                        setTimeout(() => {
+                            loadingScreen.classList.add('hidden');
+                        }, 700);
+                    }
+                });
+            }
+        });
+
+        // ================= BACKGROUND CANVAS STARFIELD =================
+        let canvas, ctx;
+        let particles = [];
+        const particleCount = 20; 
+
+        function resizeCanvas() {
+            if (canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * window.innerWidth;
+                this.y = Math.random() * window.innerHeight;
+                this.vx = (Math.random() - 0.5) * 0.12;
+                this.vy = (Math.random() - 0.5) * 0.12;
+                this.radius = Math.random() * 1.5 + 0.5;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (canvas) {
+                    if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
+                    if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy;
+                }
+            }
+
+            draw() {
+                if (!ctx) return;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(129, 140, 248, 0.08)';
+                ctx.fill();
+            }
+        }
+
+        function animate() {
+            if (!ctx || !canvas) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.strokeStyle = 'rgba(129, 140, 248, 0.015)';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
+                    if (dist < 220) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        // ================= PREMIUM INTERACTIVE 3D FIGMA WORKSPACE =================
+        const parallaxScene = document.getElementById('parallax-scene');
+        const cardLayers = [
+            document.getElementById('card-layer-1'),
+            document.getElementById('card-layer-2'),
+            document.getElementById('card-layer-3')
+        ];
+
+        let hoverStateActive = false;
+
+        // Mouse handlers (Desktop)
+        if (parallaxScene) {
+            parallaxScene.addEventListener('mouseenter', () => {
+                hoverStateActive = true;
+                triggerWhooshSound();
+            });
+
+            parallaxScene.addEventListener('mousemove', (e) => {
+                if (window.innerWidth >= 1024) {
+                    const rect = parallaxScene.getBoundingClientRect();
+                    const mouseX = e.clientX - rect.left - (rect.width / 2);
+                    const mouseY = e.clientY - rect.top - (rect.height / 2);
+
+                    const tiltX = (mouseY / (rect.height / 2)) * -14; 
+                    const tiltY = (mouseX / (rect.width / 2)) * 14;
+
+                    // Pulling layers perfectly flat/unified together on mouseover hover
+                    cardLayers[0].style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateZ(0px)`;
+                    cardLayers[1].style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateZ(10px) translate(0px, 0px)`;
+                    cardLayers[2].style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateZ(15px) translate(0px, 0px)`;
+                }
+            });
+
+            parallaxScene.addEventListener('mouseleave', () => {
+                hoverStateActive = false;
+                if (window.innerWidth >= 1024) {
+                    // Smoothly separate layers back into original structural explode view
+                    cardLayers[0].style.transform = `rotateX(10deg) rotateY(-15deg) translateZ(10px)`;
+                    cardLayers[1].style.transform = `rotateX(10deg) rotateY(-15deg) translateZ(50px) translate(-30px, 40px)`;
+                    cardLayers[2].style.transform = `rotateX(10deg) rotateY(-15deg) translateZ(80px) translate(60px, -60px)`;
+                }
+            });
+
+            // Touch support for dragging/swiping with thumb parallax interactive on mobile
+            let touchStartX = 0;
+            let touchStartY = 0;
+
+            parallaxScene.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                    hoverStateActive = true;
+                    triggerWhooshSound();
+                    triggerHapticFeedback();
+                }
+            }, { passive: true });
+
+            parallaxScene.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 1 && hoverStateActive) {
+                    const rect = parallaxScene.getBoundingClientRect();
+                    const currentX = e.touches[0].clientX - rect.left - (rect.width / 2);
+                    const currentY = e.touches[0].clientY - rect.top - (rect.height / 2);
+
+                    const tiltX = (currentY / (rect.height / 2)) * -22; 
+                    const tiltY = (currentX / (rect.width / 2)) * 22;
+
+                    cardLayers[0].style.transform = `rotateX(${10 + tiltX}deg) rotateY(${-15 + tiltY}deg) translateZ(0px)`;
+                    cardLayers[1].style.transform = `rotateX(${10 + tiltX}deg) rotateY(${-15 + tiltY}deg) translateZ(25px) translate(-10px, 15px)`;
+                    cardLayers[2].style.transform = `rotateX(${10 + tiltX}deg) rotateY(${-15 + tiltY}deg) translateZ(40px) translate(20px, -20px)`;
+                }
+            }, { passive: true });
+
+            parallaxScene.addEventListener('touchend', () => {
+                hoverStateActive = false;
+                // Revert smoothly
+                cardLayers[0].style.transform = `rotateX(10deg) rotateY(-15deg) translateZ(10px)`;
+                cardLayers[1].style.transform = `rotateX(10deg) rotateY(-15deg) translateZ(50px) translate(-30px, 40px)`;
+                cardLayers[2].style.transform = `rotateX(10deg) rotateY(-15deg) translateZ(80px) translate(60px, -60px)`;
+            }, { passive: true });
+        }
+
+        // Mobile scroll center merge detection system
+        function handleMobileParallaxScroll() {
+            if (window.innerWidth < 1024 && parallaxScene) {
+                const rect = parallaxScene.getBoundingClientRect();
+                const viewH = window.innerHeight;
+                const distanceToCenter = Math.abs((rect.top + rect.height/2) - (viewH/2));
+                const proximityFactor = Math.max(0, 1 - (distanceToCenter / (viewH / 2.2)));
+
+                // Trigger soft whoosh on transition border cross
+                if (proximityFactor > 0.8 && !hoverStateActive) {
+                    hoverStateActive = true;
+                    triggerWhooshSound();
+                } else if (proximityFactor <= 0.8 && hoverStateActive) {
+                    hoverStateActive = false;
+                }
+
+                if (!hoverStateActive) {
+                    // If close to center, layers merge perfectly; otherwise split apart
+                    const z1 = 10;
+                    const z2 = 80 - (70 * proximityFactor);
+                    const z3 = 110 - (95 * proximityFactor);
+
+                    const t2_X = -30 + (30 * proximityFactor);
+                    const t2_Y = 40 - (40 * proximityFactor);
+
+                    const t3_X = 60 - (60 * proximityFactor);
+                    const t3_Y = -60 + (60 * proximityFactor);
+
+                    cardLayers[0].style.transform = `rotateX(10deg) rotateY(-15deg) translateZ(${z1}px)`;
+                    cardLayers[1].style.transform = `rotateX(10deg) rotateY(-15deg) translateZ(${z2}px) translate(${t2_X}px, ${t2_Y}px)`;
+                    cardLayers[2].style.transform = `rotateX(10deg) rotateY(-15deg) translateZ(${z3}px) translate(${t3_X}px, ${t3_Y}px)`;
+                }
+            }
+        }
+
+        // ================= CHROMATIC CHOREOGRAPHED SCROLL ROADMAP =================
+        let activeNodesSet = new Set(); // Store initialized sound indexes
+
+        function handleTimelineScrollAnimation() {
+            const timelineContainer = document.querySelector('#experience');
+            if (!timelineContainer) return;
+
+            const items = document.querySelectorAll('.timeline-item');
+            const indicator = document.getElementById('active-timeline-indicator');
+            if (!indicator) return;
+
+            const rect = timelineContainer.getBoundingClientRect();
+            const viewH = window.innerHeight;
+
+            const progressTop = -rect.top + (viewH / 2);
+            let pct = progressTop / rect.height;
+            if (pct < 0) pct = 0;
+            if (pct > 1) pct = 1;
+
+            indicator.style.transform = `scaleY(${pct})`;
+
+            items.forEach((item, idx) => {
+                const itemRect = item.getBoundingClientRect();
+                const nodeCircle = item.querySelector('.timeline-node');
+                const nodeInner = item.querySelector('.timeline-node-inner');
+
+                if (itemRect.top < viewH / 2) {
+                    nodeCircle.style.borderColor = idx === 0 ? "#818cf8" : idx === 1 ? "#c084fc" : idx === 2 ? "#94a3b8" : "#34d399";
+                    nodeInner.style.backgroundColor = idx === 0 ? "#818cf8" : idx === 1 ? "#c084fc" : idx === 2 ? "#94a3b8" : "#34d399";
+                    nodeInner.classList.remove('bg-zinc-600');
+
+                    // Play clean node progression chime once on activate scroll pass
+                    if (!activeNodesSet.has(idx)) {
+                        activeNodesSet.add(idx);
+                        triggerAudio('node-ping');
+                    }
+                } else {
+                    nodeCircle.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                    nodeInner.style.backgroundColor = "transparent";
+                    nodeInner.classList.add('bg-zinc-600');
+                    activeNodesSet.delete(idx); // Clear set if scrolled back up
+                }
+            });
+        }
+
+        // ================= REAL-TIME CYCLORAMA CAMERA PERSPECTIVE MATRIX =================
+        // Morphing path: Roof (tilted forward at Hero top) -> Wall (Middle section) -> Floor (tilted back at contact bottom)
+        function handleCycloramaScroll() {
+            const cycMesh = document.getElementById('cyc-mesh');
+            if (!cycMesh) return;
+
+            const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+            if (totalHeight <= 0) return;
+
+            const scrollPct = window.scrollY / totalHeight;
+
+            // Reversing rotation: negative at top (roof) to positive at bottom (floor)
+            const targetRotationX = -65 + (scrollPct * 130); 
+            const targetTranslateY = (scrollPct - 0.5) * 180; 
+
+            cycMesh.style.transform = `rotateX(${targetRotationX}deg) translateY(${targetTranslateY}px) translateZ(-160px)`;
+        }
+
+        window.addEventListener('scroll', () => {
+            handleTimelineScrollAnimation();
+            handleMobileParallaxScroll();
+            handleCycloramaScroll();
+
+            // Scroll parallax for background atmospheric blobs
+            const scrolled = window.pageYOffset;
+            const bgBlob1 = document.getElementById('bg-blob-1');
+            const bgBlob2 = document.getElementById('bg-blob-2');
+            const bgBlob3 = document.getElementById('bg-blob-3');
+            const driftBlob = document.getElementById('gradient-drift-blob');
+
+            if (bgBlob1) bgBlob1.style.transform = `translateY(${scrolled * 0.12}px)`;
+            if (bgBlob2) bgBlob2.style.transform = `translateY(-${scrolled * 0.08}px)`;
+            if (bgBlob3) bgBlob3.style.transform = `translateY(${scrolled * 0.04}px)`;
+            
+            // Atmospheric parallax blob
+            if (driftBlob) {
+                driftBlob.style.transform = `translate(${scrolled * 0.06}px, ${scrolled * 0.03}px)`;
+            }
+        });
+
+        // ================= SELECTED WORKS PERSISTENT REVEALS =================
+        const revealOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.12 
+        };
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal-active');
+                } else {
+                    entry.target.classList.remove('reveal-active');
+                }
+            });
+        }, revealOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // Initialize background canvas upon load
+        window.addEventListener('DOMContentLoaded', () => {
+            canvas = document.getElementById('neural-canvas');
+            if (canvas) {
+                ctx = canvas.getContext('2d');
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push(new Particle());
+                }
+                animate();
+            }
+            // Trigger first projection cycle on load
+            handleCycloramaScroll();
+        });
+
+        // ================= DIRECT COMMS CLICK-TO-COPY EMAILS =================
+        function copyEmailToClipboard() {
+            triggerTactileSound();
+            triggerHapticFeedback();
+            
+            const tempInput = document.createElement("input");
+            tempInput.value = "huzaifasalim7@gmail.com";
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            // Vocal speech confirmation
+            speakVoiceFeedback("Email Copied!");
+
+            // Trigger visual toast
+            const toast = document.getElementById('toast-notification');
+            const pBarContainer = document.getElementById('progress-container');
+            if (toast) {
+                document.getElementById('toast-title').innerText = "Vocal Synced!";
+                document.getElementById('toast-msg').innerText = "Email successfully copied. Voice synthesizer activated.";
+                pBarContainer.classList.add('hidden');
+
+                toast.classList.remove('translate-y-20', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+
+                setTimeout(() => {
+                    toast.classList.add('translate-y-20', 'opacity-0');
+                    toast.classList.remove('translate-y-0', 'opacity-100');
+                }, 3000);
+            }
+        }
+
+        // ================= RESUME COMPILATION DELIGHT EVENT =================
+        function triggerResumeCompilation() {
+            triggerResumeRocketSound();
+            triggerHapticFeedback();
+
+            const toast = document.getElementById('toast-notification');
+            const pBarContainer = document.getElementById('progress-container');
+            const pBar = document.getElementById('progress-bar');
+            
+            if (toast && pBarContainer && pBar) {
+                document.getElementById('toast-title').innerText = "COMPILING RESUME BUNDLE";
+                document.getElementById('toast-msg').innerText = "Gathering design specs & compiling dynamic vectors...";
+                
+                pBarContainer.classList.remove('hidden');
+                pBar.style.width = '0%';
+                
+                toast.classList.remove('translate-y-20', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 4;
+                    pBar.style.width = `${progress}%`;
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        
+                        // Execute direct mock anchor file download
+                        const link = document.createElement('a');
+                        link.href = '#'; // Fallback representation
+                        link.download = 'Huzaifa_Salim_Resume.pdf';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+
+                        document.getElementById('toast-title').innerText = "PACKET INSTALLED";
+                        document.getElementById('toast-msg').innerText = "Huzaifa_Salim_Resume.pdf successfully compiled.";
+                        
+                        speakVoiceFeedback("Download Finished.");
+
+                        setTimeout(() => {
+                            toast.classList.add('translate-y-20', 'opacity-0');
+                            toast.classList.remove('translate-y-0', 'opacity-100');
+                        }, 2000);
+                    }
+                }, 50);
+            }
+        }
+
+        // ================= PREMIUM OUTCOME-FIRST CASE STUDY MODALS =================
+        const caseStudyDatabase = {
+            fairdrive: `
+                <div class="space-y-6">
+                    <div class="border-b border-white/5 pb-4">
+                        <span class="font-mono text-xs text-zinc-500 tracking-wider uppercase">// MISSION ARCHIVES // SEC_01</span>
+                        <h3 id="modal-title" class="text-3xl font-display font-black text-white mt-1">FAIRDRIVE RIDE ECOSYSTEM</h3>
+                        <p class="font-mono text-xs text-brand-accent mt-1">Role: Founding Designer | Sep 2024 - Dec 2025</p>
+                    </div>
+
+                    <!-- Highlighted Symmetrical Card for Impact Metrics -->
+                    <div class="p-6 border border-brand-accent/20 bg-brand-dark rounded-xl space-y-4">
+                        <span class="font-mono text-[9px] text-brand-accent font-bold block uppercase tracking-widest">// RECORDED CASE OUTCOMES</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
+                            <div class="bg-brand-black/40 p-4 rounded-xl border border-white/5">
+                                <span class="block text-2xl font-black text-white font-mono mb-1">3</span>
+                                <span class="block text-[10px] text-zinc-400">Products shipped as sole designer</span>
+                            </div>
+                            <div class="bg-brand-black/40 p-4 rounded-xl border border-white/5">
+                                <span class="block text-2xl font-black text-white font-mono mb-1">0→1</span>
+                                <span class="block text-[10px] text-zinc-400">Full marketplace built from concept</span>
+                            </div>
+                            <div class="bg-brand-black/40 p-4 rounded-xl border border-white/5">
+                                <span class="block text-2xl font-black text-white font-mono mb-1">100%</span>
+                                <span class="block text-[10px] text-zinc-400">End-to-end user ownership</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 text-zinc-300 text-sm leading-relaxed">
+                        <h4 class="text-white font-mono font-bold text-base uppercase tracking-widest">// 01 / Context</h4>
+                        <p>
+                            Developing high-performance booking grids for regional South Asian markets demands structural simplicity. We designed a dual-channel mobile architecture optimized specifically for low-tier hardware, stabilizing communication flows with zero dispatcher delay.
+                        </p>
+
+                        <h4 class="text-white font-mono font-bold text-base uppercase tracking-widest">// 02 / Approach</h4>
+                        <p>
+                            Created responsive grids and scaled layout components within modular Figma structures. Facilitated early co-design feedback channels with team developers to decrease visual refactoring by 30%.
+                        </p>
+
+                        <h4 class="text-white font-mono font-bold text-base uppercase tracking-widest">// 03 / Reflection</h4>
+                        <p>
+                            Designing for a market with intense physical environments and connectivity constraints requires physical empathy and strong asset optimization workflows.
+                        </p>
+                    </div>
+
+                    <div class="pt-4 border-t border-white/5 flex justify-end">
+                        <a href="https://figma.com" target="_blank" class="px-6 py-2.5 bg-brand-accent/10 border border-brand-accent/30 text-brand-accent hover:border-brand-accent rounded-full text-xs font-mono uppercase tracking-wider transition-all">
+                            View Figma ↗
+                        </a>
+                    </div>
+                </div>
+            `,
+            filesure: `
+                <div class="space-y-6">
+                    <div class="border-b border-white/5 pb-4">
+                        <span class="font-mono text-xs text-zinc-500 tracking-wider uppercase">// MISSION ARCHIVES // SEC_02</span>
+                        <h3 id="modal-title" class="text-3xl font-display font-black text-white mt-1">FILESURE SaaS PLATFORM</h3>
+                        <p class="font-mono text-xs text-brand-purple mt-1">Role: Lead UX Designer | Sep 2024 - Dec 2025</p>
+                    </div>
+
+                    <!-- Highlighted Symmetrical Card for Impact Metrics -->
+                    <div class="p-6 border border-brand-purple/20 bg-brand-dark rounded-xl space-y-4">
+                        <span class="font-mono text-[9px] text-brand-purple font-bold block uppercase tracking-widest">// RECORDED CASE OUTCOMES</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
+                            <div class="bg-brand-black/40 p-4 rounded-xl border border-white/5">
+                                <span class="block text-2xl font-black text-white font-mono mb-1">45%</span>
+                                <span class="block text-[10px] text-zinc-400">Optimized query searching speed</span>
+                            </div>
+                            <div class="bg-brand-black/40 p-4 rounded-xl border border-white/5">
+                                <span class="block text-2xl font-black text-white font-mono mb-1">SaaS</span>
+                                <span class="block text-[10px] text-zinc-400">Unified enterprise filing panels</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 text-zinc-300 text-sm leading-relaxed">
+                        <h4 class="text-white font-mono font-bold text-base uppercase tracking-widest">// 01 / Context</h4>
+                        <p>
+                            Corporate legal compliance systems are historically cluttered. We addressed data-dense screens, designing modular filter layouts that optimized legal query times by 45%.
+                        </p>
+
+                        <h4 class="text-white font-mono font-bold text-base uppercase tracking-widest">// 02 / Approach</h4>
+                        <p>
+                            Formulated brand design keys, unified interface guidelines, and standardized tone attributes, ensuring a solid, enterprise-grade B2B experience.
+                        </p>
+
+                        <h4 class="text-white font-mono font-bold text-base uppercase tracking-widest">// 03 / Reflection</h4>
+                        <p>
+                            Consolidating raw, unstructured government endpoints into neat tables demands extreme detail parameters and modular token frameworks.
+                        </p>
+                    </div>
+
+                    <div class="pt-4 border-t border-white/5 flex justify-end">
+                        <a href="https://figma.com" target="_blank" class="px-6 py-2.5 bg-brand-purple/10 border border-brand-purple/30 text-brand-purple hover:border-brand-purple rounded-full text-xs font-mono uppercase tracking-wider transition-all">
+                            View Figma ↗
+                        </a>
+                    </div>
+                </div>
+            `,
+            lyftindia: `
+                <div class="space-y-6">
+                    <div class="border-b border-white/5 pb-4">
+                        <span class="font-mono text-xs text-zinc-500 tracking-wider uppercase">// MISSION ARCHIVES // SEC_03</span>
+                        <h3 id="modal-title" class="text-3xl font-display font-black text-white mt-1">LYFT INDIA TAXI REDESIGN</h3>
+                        <p class="font-mono text-xs text-brand-mint mt-1">Role: UI Designer | Mar 2023 - Aug 2023</p>
+                    </div>
+
+                    <!-- Highlighted Symmetrical Card for Impact Metrics -->
+                    <div class="p-6 border border-brand-mint/20 bg-brand-dark rounded-xl space-y-4">
+                        <span class="font-mono text-[9px] text-brand-mint font-bold block uppercase tracking-widest">// RECORDED CASE OUTCOMES</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
+                            <div class="bg-brand-black/40 p-4 rounded-xl border border-white/5">
+                                <span class="block text-2xl font-black text-white font-mono mb-1">+18%</span>
+                                <span class="block text-[10px] text-zinc-400">Increase in checkout conversion</span>
+                            </div>
+                            <div class="bg-brand-black/40 p-4 rounded-xl border border-white/5">
+                                <span class="block text-2xl font-black text-white font-mono mb-1">Taxi</span>
+                                <span class="block text-[10px] text-zinc-400">Optimized urban checkouts</span>
+                            </div>
+                            <div class="bg-brand-black/40 p-4 rounded-xl border border-white/5">
+                                <span class="block text-2xl font-black text-white font-mono mb-1">Play</span>
+                                <span class="block text-[10px] text-zinc-400">Promotional vector design campaigns</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 text-zinc-300 text-sm leading-relaxed">
+                        <h4 class="text-white font-mono font-bold text-base uppercase tracking-widest">// 01 / Context</h4>
+                        <p>
+                            Metropolitan Indian transit corridors are fast-paced. Commuters need instantaneous fare summaries and recognizable vehicle identifiers in crowded spaces.
+                        </p>
+
+                        <h4 class="text-white font-mono font-bold text-base uppercase tracking-widest">// 02 / Approach</h4>
+                        <p>
+                            Restructured checkout flows and refined marketing visuals, providing a highly tailored ride experience rooted in regional urban mobility habits.
+                        </p>
+
+                        <h4 class="text-white font-mono font-bold text-base uppercase tracking-widest">// 03 / Reflection</h4>
+                        <p>
+                            Slight visual enhancements directly scale into massive business growth if placed correctly along the primary conversion funnel.
+                        </p>
+                    </div>
+
+                    <div class="pt-4 border-t border-white/5 flex justify-end">
+                        <a href="https://figma.com" target="_blank" class="px-6 py-2.5 bg-brand-mint/10 border border-brand-mint/30 text-brand-mint hover:border-brand-mint rounded-full text-xs font-mono uppercase tracking-wider transition-all">
+                            View Figma ↗
+                        </a>
+                    </div>
+                </div>
+            `
+        };
+
+        const modal = document.getElementById('case-modal');
+        const modalContent = document.getElementById('case-modal-content');
+
+        function openCaseStudy(key) {
+            triggerTactileSound();
+            if (modalContent && modal) {
+                modalContent.innerHTML = caseStudyDatabase[key];
+                modal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+                modal.focus();
+            }
+        }
+
+        function closeCaseStudy() {
+            triggerTactileSound();
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            }
+        }
+
+        // Close modal on Esc press
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeCaseStudy();
+            }
+        });
+    </script>
+</body>
 </html>
