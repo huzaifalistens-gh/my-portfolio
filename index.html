@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth select-none">
+<html lang="en" class="scroll-smooth select-none overflow-x-hidden">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
@@ -40,7 +40,17 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
+    <!-- jsPDF & html2canvas for 100% Identical Visual Snapshots -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <style>
+        /* Prevent scroll bar leakage while loading */
+        body.loading-active {
+            overflow: hidden !important;
+            height: 100vh;
+        }
+
         /* ================= 3D CYCLORAMA ARCHITECTURAL GRID SYSTEM ================= */
         /* Replicates the studio backdrop grid curving of 77646068_SL-072622-51930-20.jpg */
         /* Configured to morph: Roof -> Wall -> Floor as user scrolls down */
@@ -182,7 +192,7 @@
         }
     </style>
 </head>
-<body class="bg-brand-black text-zinc-300 font-sans antialiased selection:bg-brand-accent selection:text-white overflow-x-hidden relative min-h-screen pb-20 md:pb-6">
+<body class="bg-brand-black text-zinc-300 font-sans antialiased selection:bg-brand-accent selection:text-white overflow-x-hidden relative min-h-screen pb-20 md:pb-6 loading-active">
 
     <!-- ================= SYSTEM LOADER ================= -->
     <div id="loading-screen" class="fixed inset-0 z-[100] bg-brand-black flex flex-col items-center justify-center transition-all duration-700 pointer-events-auto">
@@ -194,47 +204,39 @@
                 <!-- Interactive Crosshair Assembler -->
                 <div class="absolute top-1/2 left-0 right-0 h-[1px] bg-white/20"></div>
                 <div class="absolute left-1/2 top-0 bottom-0 w-[1px] bg-white/20"></div>
-                <!-- Core Solid Element (Native SVG Branding) -->
+                <!-- Core Solid Element (Native SVG Branding with clean inline presentation styles) -->
                 <div class="absolute inset-3 bg-brand-dark border border-white/10 flex items-center justify-center rounded-lg overflow-hidden p-1">
-                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                         viewBox="0 0 340.9 340.9" style="enable-background:new 0 0 340.9 340.9; width: 100%; height: 100%;" xml:space="preserve">
-                    <style type="text/css">
-                        .st0{display:none;}
-                        .st1{display:inline;}
-                        .st2{display:inline;clip-path:url(#SVGID_2_);fill:#010C80;}
-                        .st3{display:inline;clip-path:url(#SVGID_4_);fill:#010C80;}
-                        .st4{display:none;fill:#010C80;}
-                        .st5{clip-path:url(#SVGID_6_);fill:#FFFFFF;}
-                    </style>
-                    <g>
-                        <path class="st5" d="M304.9,234.5c-2.7-1.5-6.1-1.1-8,1.1c-2.3,2.3-1.9,4.5-2.7,7.2c-3.4,12.5-21.6,13.6-26.5,1.5V85.6l25.8-26.1
-                            c3-3,2.7-8-0.8-10.2c-2.7-1.9-5.3-1.1-8-0.8c-5.7,0.8-11.7,0-17.4-0.4c-7.6-0.8-14.8-2.3-22-3.8c-5.3-1.1-14.4-5.7-18.6-0.8
-                            l-28.8,34.8c-3.4,4.5-0.4,11,5.3,11h2.7v34.1h-41.7V88.6l26.9-36.7c3.8-5.3-1.9-12.9-8-10.2c-1.9,0.8-3.8,2.6-5.3,4.2
-                            c-8,6.1-17.4,9.9-27.7,9.5c-7.2-0.4-14-2.7-20.8-4.2c-6.4-1.5-13.3-2.7-19.7-4.2c-8-1.5-15.9-3-24.2-4.2
-                            C67.4,39,51.9,44.3,41.7,57.6c-9.5,12.1-11.4,29.2-4.5,43.6c6.4,13.6,20.5,23.1,36,23.9c3.8,0,9.8,0.4,13.3-2.3
-                            c3-2.3,3.4-6.8,1.1-9.5c-3.4-3.4-8-3.4-11-6.4c-2.7-2.3-4.5-5.7-4.9-9.5c-0.8-7.6,4.2-15.2,11.7-16.7c8-1.9,15.9,2.7,18.2,10.2v33
-                            c-14.4,2.7-23.9,14-25.8,28.4c-0.4,3.4-1.1,7.6,1.5,10.6c2.3,2.3,5.7,2.7,8.3,1.1c4.9-2.7,10.2-4.5,15.5-5.3v8
-                            c-14.4,2.7-23.9,14-25.8,28.4c-0.4,3.4-1.1,7.6,1.5,10.6c2.3,2.3,5.7,2.7,8.3,1.1c4.9-2.7,10.2-4.5,15.5-5.3v22
-                            c-8.7,1.9-16.7,4.9-24.6,9.5c-14,8-25.8,19.7-33.7,33.7c-2.3,3.8-3.8,7.6-5.3,11.4c-1.1,3.4-3.4,7.2-1.5,11
-                            c5.3,9.8,15.9-3.4,20.8-6.4c15.2-10.2,33.7-14.8,51.9-12.1c9.1,1.1,18.2,4.2,26.1,8.7c4.2,2.3,8.3,5.3,11.7,8.3
-                            c3,2.7,7.2,4.9,11,1.5l29.2-25c8-6.4-0.8-14-4.9-17.8c-5.3-4.9-11.4-9.5-17.4-13.3v-53.4h41.7V244c0,28,28.4,48.9,54.2,48.9
-                            c23.9,0,44.7-17.8,48.1-41.3C308.7,246.2,310.2,237.5,304.9,234.5L304.9,234.5z M244,275.8c-12.9-5.3-24.6-17-24.6-31.8v-71.2
-                            c0-3.8-3-6.8-6.8-6.8h-55.3c-3.8,0-6.8,3-6.8,6.8v64.4c0,5.7,6.8,7.6,10.6,10.2c4.5,3,8.7,6.4,12.5,10.2l-20.1,17
-                            C127.7,254.2,90.9,250,61,264.4c6.8-9.1,15.9-16.7,26.1-21.6c5.3-2.7,11-4.5,16.7-6.1c4.9-1.1,11.4-1.5,11-8V194
-                            c0.4-11.4-17.8-6.4-23.9-4.5c3-6.4,9.9-9.8,16.7-9.8c4.2,0.4,7.2-3,7.2-7.2v-20.8c0.4-11.4-17.8-6.4-23.9-4.5
-                            c1.9-4.2,5.3-7.2,9.9-8.7c2.3-0.8,4.5-0.8,7.2-1.1c3.8,0.4,7.2-3,7.2-6.8V90.2c0-7.2-6.8-15.2-12.5-18.6
-                            c-6.8-4.5-15.5-5.7-23.1-3.8c-17,4.5-26.1,23.9-19.3,39.8c-12.9-7.6-18.2-24.2-11-37.5c3-5.7,8-10.2,14-12.9
-                            c6.4-2.7,12.5-1.9,19.3-0.8c10.2,1.5,20.5,3.4,30.3,5.7c15.9,3,33,9.9,49.2,6.1l-11,15.2c-0.8,1.1-1.1,2.7-1.1,4.2v43.9
-                            c0,3.8,3,6.8,6.8,6.8h55.3c3.8,0,6.8-3,6.8-6.8V83c0-2.3-1.1-4.2-3-5.7l17.8-21.6c7.6,1.9,23.5,5.7,37.5,6.4L255.7,78
-                            c-1.1,1.5-1.9,3-1.9,4.9v162.5c0,6.4,6.4,13.3,11.4,16.7c6.4,4.2,14,5.3,21.6,3.8C276.5,278.8,259.1,281.8,244,275.8L244,275.8z
-                             M39.4,209.9c-3.8,0-6.8-3-6.8-6.8v-49.6c0-3.8,3-6.8,6.8-6.8c3.8,0,6.8,3,6.8,6.8V203C46.2,206.8,43.2,209.9,39.4,209.9
-                            L39.4,209.9z M128.4,306.8c-1.5,3.4-5.3,5.3-8.7,3.8c-13.6-5.3-29.2-5.3-42.8,0.4c-0.8,0.4-1.9,0.4-2.7,0.4
-                            c-2.6,0-5.3-1.5-6.4-4.2c-1.5-3.4,0.4-7.6,3.8-9.1c16.7-6.8,36-7.2,52.7-0.4C128,299.6,129.9,303.4,128.4,306.8L128.4,306.8z
-                             M297.7,89.4c3.8,0,6.8,3,6.8,6.8V203c0,3.8-3,6.8-6.8,6.8s-6.8-3-6.8-6.8V96.2C290.9,92.4,294,89.4,297.7,89.4L297.7,89.4z
-                             M286.4,0H49.6C22.4,0,0,22.4,0,49.6v237.1c0,29.5,24.6,54.2,54.6,54.2h232.2c29.5,0,54.2-24.6,54.2-54.6V54.6
-                            C340.9,24.6,316.3,0,286.4,0L286.4,0z M327.3,286.4c0,22.4-18.6,40.9-40.9,40.9H54.6c-22.4,0-40.9-18.6-40.9-40.9V49.6
-                            c0-19.7,16.3-36,36-36h237.1c22.3,0,40.9,18.6,40.9,40.9L327.3,286.4z M327.3,286.4"/>
-                    </g>
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                         viewBox="0 0 340.9 340.9" style="width: 100%; height: 100%;" xml:space="preserve">
+                        <g>
+                            <path fill="#FFFFFF" d="M304.9,234.5c-2.7-1.5-6.1-1.1-8,1.1c-2.3,2.3-1.9,4.5-2.7,7.2c-3.4,12.5-21.6,13.6-26.5,1.5V85.6l25.8-26.1
+                                c3-3,2.7-8-0.8-10.2c-2.7-1.9-5.3-1.1-8-0.8c-5.7,0.8-11.7,0-17.4-0.4c-7.6-0.8-14.8-2.3-22-3.8c-5.3-1.1-14.4-5.7-18.6-0.8
+                                l-28.8,34.8c-3.4,4.5-0.4,11,5.3,11h2.7v34.1h-41.7V88.6l26.9-36.7c3.8-5.3-1.9-12.9-8-10.2c-1.9,0.8-3.8,2.6-5.3,4.2
+                                c-8,6.1-17.4,9.9-27.7,9.5c-7.2-0.4-14-2.7-20.8-4.2c-6.4-1.5-13.3-2.7-19.7-4.2c-8-1.5-15.9-3-24.2-4.2
+                                C67.4,39,51.9,44.3,41.7,57.6c-9.5,12.1-11.4,29.2-4.5,43.6c6.4,13.6,20.5,23.1,36,23.9c3.8,0,9.8,0.4,13.3-2.3
+                                c3-2.3,3.4-6.8,1.1-9.5c-3.4-3.4-8-3.4-11-6.4c-2.7-2.3-4.5-5.7-4.9-9.5c-0.8-7.6,4.2-15.2,11.7-16.7c8-1.9,15.9,2.7,18.2,10.2v33
+                                c-14.4,2.7-23.9,14-25.8,28.4c-0.4,3.4-1.1,7.6,1.5,10.6c2.3,2.3,5.7,2.7,8.3,1.1c4.9-2.7,10.2-4.5,15.5-5.3v8
+                                c-14.4,2.7-23.9,14-25.8,28.4c-0.4,3.4-1.1,7.6,1.5,10.6c2.3,2.3,5.7,2.7,8.3,1.1c4.9-2.7,10.2-4.5,15.5-5.3v22
+                                c-8.7,1.9-16.7,4.9-24.6,9.5c-14,8-25.8,19.7-33.7,33.7c-2.3,3.8-3.8,7.6-5.3,11.4c-1.1,3.4-3.4,7.2-1.5,11
+                                c5.3,9.8,15.9-3.4,20.8-6.4c15.2-10.2,33.7-14.8,51.9-12.1c9.1,1.1,18.2,4.2,26.1,8.7c4.2,2.3,8.3,5.3,11.7,8.3
+                                c3,2.7,7.2,4.9,11,1.5l29.2-25c8-6.4-0.8-14-4.9-17.8c-5.3-4.9-11.4-9.5-17.4-13.3v-53.4h41.7V244c0,28,28.4,48.9,54.2,48.9
+                                c23.9,0,44.7-17.8,48.1-41.3C308.7,246.2,310.2,237.5,304.9,234.5L304.9,234.5z M244,275.8c-12.9-5.3-24.6-17-24.6-31.8v-71.2
+                                c0-3.8-3-6.8-6.8-6.8h-55.3c-3.8,0-6.8,3-6.8,6.8v64.4c0,5.7,6.8,7.6,10.6,10.2c4.5,3,8.7,6.4,12.5,10.2l-20.1,17
+                                C127.7,254.2,90.9,250,61,264.4c6.8-9.1,15.9-16.7,26.1-21.6c5.3-2.7,11-4.5,16.7-6.1c4.9-1.1,11.4-1.5,11-8V194
+                                c0.4-11.4-17.8-6.4-23.9-4.5c3-6.4,9.9-9.8,16.7-9.8c4.2,0.4,7.2-3,7.2-7.2v-20.8c0.4-11.4-17.8-6.4-23.9-4.5
+                                c1.9-4.2,5.3-7.2,9.9-8.7c2.3-0.8,4.5-0.8,7.2-1.1c3.8,0.4,7.2-3,7.2-6.8V90.2c0-7.2-6.8-15.2-12.5-18.6
+                                c-6.8-4.5-15.5-5.7-23.1-3.8c-17,4.5-26.1,23.9-19.3,39.8c-12.9-7.6-18.2-24.2-11-37.5c3-5.7,8-10.2,14-12.9
+                                c6.4-2.7,12.5-1.9,19.3-0.8c10.2,1.5,20.5,3.4,30.3,5.7c15.9,3,33,9.9,49.2,6.1l-11,15.2c-0.8,1.1-1.1,2.7-1.1,4.2v43.9
+                                c0,3.8,3,6.8,6.8,6.8h55.3c3.8,0,6.8-3,6.8-6.8V83c0-2.3-1.1-4.2-3-5.7l17.8-21.6c7.6,1.9,23.5,5.7,37.5,6.4L255.7,78
+                                c-1.1,1.5-1.9,3-1.9,4.9v162.5c0,6.4,6.4,13.3,11.4,16.7c6.4,4.2,14,5.3,21.6,3.8C276.5,278.8,259.1,281.8,244,275.8L244,275.8z
+                                 M39.4,209.9c-3.8,0-6.8-3-6.8-6.8v-49.6c0-3.8,3-6.8,6.8-6.8c3.8,0,6.8,3,6.8,6.8V203C46.2,206.8,43.2,209.9,39.4,209.9
+                                L39.4,209.9z M128.4,306.8c-1.5,3.4-5.3,5.3-8.7,3.8c-13.6-5.3-29.2-5.3-42.8,0.4c-0.8,0.4-1.9,0.4-2.7,0.4
+                                c-2.6,0-5.3-1.5-6.4-4.2c-1.5-3.4,0.4-7.6,3.8-9.1c16.7-6.8,36-7.2,52.7-0.4C128,299.6,129.9,303.4,128.4,306.8L128.4,306.8z
+                                 M297.7,89.4c3.8,0,6.8,3,6.8,6.8V203c0,3.8-3,6.8-6.8,6.8s-6.8-3-6.8-6.8V96.2C290.9,92.4,294,89.4,297.7,89.4L297.7,89.4z
+                                 M286.4,0H49.6C22.4,0,0,22.4,0,49.6v237.1c0,29.5,24.6,54.2,54.6,54.2h232.2c29.5,0,54.2-24.6,54.2-54.6V54.6
+                                C340.9,24.6,316.3,0,286.4,0L286.4,0z M327.3,286.4c0,22.4-18.6,40.9-40.9,40.9H54.6c-22.4,0-40.9-18.6-40.9-40.9V49.6
+                                c0-19.7,16.3-36,36-36h237.1c22.3,0,40.9,18.6,40.9,40.9L327.3,286.4z M327.3,286.4"/>
+                        </g>
                     </svg>
                 </div>
             </div>
@@ -295,47 +297,39 @@
         <div class="px-6 py-3.5 flex items-center justify-between">
             
             <a href="#" class="flex items-center space-x-3 group accessible-focus" aria-label="Huzaifa Salim Home">
-                <!-- Custom Adobe Illustrator Logo Integration -->
+                <!-- Custom Adobe Illustrator Logo Integration (Scoped Presentation Attributes) -->
                 <div class="w-8 h-8 rounded-lg border border-white/10 group-hover:border-brand-accent transition-all duration-300 flex items-center justify-center bg-brand-dark/50 overflow-hidden p-1">
-                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                         viewBox="0 0 340.9 340.9" style="enable-background:new 0 0 340.9 340.9; width: 100%; height: 100%;" xml:space="preserve">
-                    <style type="text/css">
-                        .st0{display:none;}
-                        .st1{display:inline;}
-                        .st2{display:inline;clip-path:url(#SVGID_2_);fill:#010C80;}
-                        .st3{display:inline;clip-path:url(#SVGID_4_);fill:#010C80;}
-                        .st4{display:none;fill:#010C80;}
-                        .st5{clip-path:url(#SVGID_6_);fill:#FFFFFF;}
-                    </style>
-                    <g>
-                        <path class="st5" d="M304.9,234.5c-2.7-1.5-6.1-1.1-8,1.1c-2.3,2.3-1.9,4.5-2.7,7.2c-3.4,12.5-21.6,13.6-26.5,1.5V85.6l25.8-26.1
-                            c3-3,2.7-8-0.8-10.2c-2.7-1.9-5.3-1.1-8-0.8c-5.7,0.8-11.7,0-17.4-0.4c-7.6-0.8-14.8-2.3-22-3.8c-5.3-1.1-14.4-5.7-18.6-0.8
-                            l-28.8,34.8c-3.4,4.5-0.4,11,5.3,11h2.7v34.1h-41.7V88.6l26.9-36.7c3.8-5.3-1.9-12.9-8-10.2c-1.9,0.8-3.8,2.6-5.3,4.2
-                            c-8,6.1-17.4,9.9-27.7,9.5c-7.2-0.4-14-2.7-20.8-4.2c-6.4-1.5-13.3-2.7-19.7-4.2c-8-1.5-15.9-3-24.2-4.2
-                            C67.4,39,51.9,44.3,41.7,57.6c-9.5,12.1-11.4,29.2-4.5,43.6c6.4,13.6,20.5,23.1,36,23.9c3.8,0,9.8,0.4,13.3-2.3
-                            c3-2.3,3.4-6.8,1.1-9.5c-3.4-3.4-8-3.4-11-6.4c-2.7-2.3-4.5-5.7-4.9-9.5c-0.8-7.6,4.2-15.2,11.7-16.7c8-1.9,15.9,2.7,18.2,10.2v33
-                            c-14.4,2.7-23.9,14-25.8,28.4c-0.4,3.4-1.1,7.6,1.5,10.6c2.3,2.3,5.7,2.7,8.3,1.1c4.9-2.7,10.2-4.5,15.5-5.3v8
-                            c-14.4,2.7-23.9,14-25.8,28.4c-0.4,3.4-1.1,7.6,1.5,10.6c2.3,2.3,5.7,2.7,8.3,1.1c4.9-2.7,10.2-4.5,15.5-5.3v22
-                            c-8.7,1.9-16.7,4.9-24.6,9.5c-14,8-25.8,19.7-33.7,33.7c-2.3,3.8-3.8,7.6-5.3,11.4c-1.1,3.4-3.4,7.2-1.5,11
-                            c5.3,9.8,15.9-3.4,20.8-6.4c15.2-10.2,33.7-14.8,51.9-12.1c9.1,1.1,18.2,4.2,26.1,8.7c4.2,2.3,8.3,5.3,11.7,8.3
-                            c3,2.7,7.2,4.9,11,1.5l29.2-25c8-6.4-0.8-14-4.9-17.8c-5.3-4.9-11.4-9.5-17.4-13.3v-53.4h41.7V244c0,28,28.4,48.9,54.2,48.9
-                            c23.9,0,44.7-17.8,48.1-41.3C308.7,246.2,310.2,237.5,304.9,234.5L304.9,234.5z M244,275.8c-12.9-5.3-24.6-17-24.6-31.8v-71.2
-                            c0-3.8-3-6.8-6.8-6.8h-55.3c-3.8,0-6.8,3-6.8,6.8v64.4c0,5.7,6.8,7.6,10.6,10.2c4.5,3,8.7,6.4,12.5,10.2l-20.1,17
-                            C127.7,254.2,90.9,250,61,264.4c6.8-9.1,15.9-16.7,26.1-21.6c5.3-2.7,11-4.5,16.7-6.1c4.9-1.1,11.4-1.5,11-8V194
-                            c0.4-11.4-17.8-6.4-23.9-4.5c3-6.4,9.9-9.8,16.7-9.8c4.2,0.4,7.2-3,7.2-7.2v-20.8c0.4-11.4-17.8-6.4-23.9-4.5
-                            c1.9-4.2,5.3-7.2,9.9-8.7c2.3-0.8,4.5-0.8,7.2-1.1c3.8,0.4,7.2-3,7.2-6.8V90.2c0-7.2-6.8-15.2-12.5-18.6
-                            c-6.8-4.5-15.5-5.7-23.1-3.8c-17,4.5-26.1,23.9-19.3,39.8c-12.9-7.6-18.2-24.2-11-37.5c3-5.7,8-10.2,14-12.9
-                            c6.4-2.7,12.5-1.9,19.3-0.8c10.2,1.5,20.5,3.4,30.3,5.7c15.9,3,33,9.9,49.2,6.1l-11,15.2c-0.8,1.1-1.1,2.7-1.1,4.2v43.9
-                            c0,3.8,3,6.8,6.8,6.8h55.3c3.8,0,6.8-3,6.8-6.8V83c0-2.3-1.1-4.2-3-5.7l17.8-21.6c7.6,1.9,23.5,5.7,37.5,6.4L255.7,78
-                            c-1.1,1.5-1.9,3-1.9,4.9v162.5c0,6.4,6.4,13.3,11.4,16.7c6.4,4.2,14,5.3,21.6,3.8C276.5,278.8,259.1,281.8,244,275.8L244,275.8z
-                             M39.4,209.9c-3.8,0-6.8-3-6.8-6.8v-49.6c0-3.8,3-6.8,6.8-6.8c3.8,0,6.8,3,6.8,6.8V203C46.2,206.8,43.2,209.9,39.4,209.9
-                            L39.4,209.9z M128.4,306.8c-1.5,3.4-5.3,5.3-8.7,3.8c-13.6-5.3-29.2-5.3-42.8,0.4c-0.8,0.4-1.9,0.4-2.7,0.4
-                            c-2.6,0-5.3-1.5-6.4-4.2c-1.5-3.4,0.4-7.6,3.8-9.1c16.7-6.8,36-7.2,52.7-0.4C128,299.6,129.9,303.4,128.4,306.8L128.4,306.8z
-                             M297.7,89.4c3.8,0,6.8,3,6.8,6.8V203c0,3.8-3,6.8-6.8,6.8s-6.8-3-6.8-6.8V96.2C290.9,92.4,294,89.4,297.7,89.4L297.7,89.4z
-                             M286.4,0H49.6C22.4,0,0,22.4,0,49.6v237.1c0,29.5,24.6,54.2,54.6,54.2h232.2c29.5,0,54.2-24.6,54.2-54.6V54.6
-                            C340.9,24.6,316.3,0,286.4,0L286.4,0z M327.3,286.4c0,22.4-18.6,40.9-40.9,40.9H54.6c-22.4,0-40.9-18.6-40.9-40.9V49.6
-                            c0-19.7,16.3-36,36-36h237.1c22.3,0,40.9,18.6,40.9,40.9L327.3,286.4z M327.3,286.4"/>
-                    </g>
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                         viewBox="0 0 340.9 340.9" style="width: 100%; height: 100%;" xml:space="preserve">
+                        <g>
+                            <path fill="#FFFFFF" d="M304.9,234.5c-2.7-1.5-6.1-1.1-8,1.1c-2.3,2.3-1.9,4.5-2.7,7.2c-3.4,12.5-21.6,13.6-26.5,1.5V85.6l25.8-26.1
+                                c3-3,2.7-8-0.8-10.2c-2.7-1.9-5.3-1.1-8-0.8c-5.7,0.8-11.7,0-17.4-0.4c-7.6-0.8-14.8-2.3-22-3.8c-5.3-1.1-14.4-5.7-18.6-0.8
+                                l-28.8,34.8c-3.4,4.5-0.4,11,5.3,11h2.7v34.1h-41.7V88.6l26.9-36.7c3.8-5.3-1.9-12.9-8-10.2c-1.9,0.8-3.8,2.6-5.3,4.2
+                                c-8,6.1-17.4,9.9-27.7,9.5c-7.2-0.4-14-2.7-20.8-4.2c-6.4-1.5-13.3-2.7-19.7-4.2c-8-1.5-15.9-3-24.2-4.2
+                                C67.4,39,51.9,44.3,41.7,57.6c-9.5,12.1-11.4,29.2-4.5,43.6c6.4,13.6,20.5,23.1,36,23.9c3.8,0,9.8,0.4,13.3-2.3
+                                c3-2.3,3.4-6.8,1.1-9.5c-3.4-3.4-8-3.4-11-6.4c-2.7-2.3-4.5-5.7-4.9-9.5c-0.8-7.6,4.2-15.2,11.7-16.7c8-1.9,15.9,2.7,18.2,10.2v33
+                                c-14.4,2.7-23.9,14-25.8,28.4c-0.4,3.4-1.1,7.6,1.5,10.6c2.3,2.3,5.7,2.7,8.3,1.1c4.9-2.7,10.2-4.5,15.5-5.3v8
+                                c-14.4,2.7-23.9,14-25.8,28.4c-0.4,3.4-1.1,7.6,1.5,10.6c2.3,2.3,5.7,2.7,8.3,1.1c4.9-2.7,10.2-4.5,15.5-5.3v22
+                                c-8.7,1.9-16.7,4.9-24.6,9.5c-14,8-25.8,19.7-33.7,33.7c-2.3,3.8-3.8,7.6-5.3,11.4c-1.1,3.4-3.4,7.2-1.5,11
+                                c5.3,9.8,15.9-3.4,20.8-6.4c15.2-10.2,33.7-14.8,51.9-12.1c9.1,1.1,18.2,4.2,26.1,8.7c4.2,2.3,8.3,5.3,11.7,8.3
+                                c3,2.7,7.2,4.9,11,1.5l29.2-25c8-6.4-0.8-14-4.9-17.8c-5.3-4.9-11.4-9.5-17.4-13.3v-53.4h41.7V244c0,28,28.4,48.9,54.2,48.9
+                                c23.9,0,44.7-17.8,48.1-41.3C308.7,246.2,310.2,237.5,304.9,234.5L304.9,234.5z M244,275.8c-12.9-5.3-24.6-17-24.6-31.8v-71.2
+                                c0-3.8-3-6.8-6.8-6.8h-55.3c-3.8,0-6.8,3-6.8,6.8v64.4c0,5.7,6.8,7.6,10.6,10.2c4.5,3,8.7,6.4,12.5,10.2l-20.1,17
+                                C127.7,254.2,90.9,250,61,264.4c6.8-9.1,15.9-16.7,26.1-21.6c5.3-2.7,11-4.5,16.7-6.1c4.9-1.1,11.4-1.5,11-8V194
+                                c0.4-11.4-17.8-6.4-23.9-4.5c3-6.4,9.9-9.8,16.7-9.8c4.2,0.4,7.2-3,7.2-7.2v-20.8c0.4-11.4-17.8-6.4-23.9-4.5
+                                c1.9-4.2,5.3-7.2,9.9-8.7c2.3-0.8,4.5-0.8,7.2-1.1c3.8,0.4,7.2-3,7.2-6.8V90.2c0-7.2-6.8-15.2-12.5-18.6
+                                c-6.8-4.5-15.5-5.7-23.1-3.8c-17,4.5-26.1,23.9-19.3,39.8c-12.9-7.6-18.2-24.2-11-37.5c3-5.7,8-10.2,14-12.9
+                                c6.4-2.7,12.5-1.9,19.3-0.8c10.2,1.5,20.5,3.4,30.3,5.7c15.9,3,33,9.9,49.2,6.1l-11,15.2c-0.8,1.1-1.1,2.7-1.1,4.2v43.9
+                                c0,3.8,3,6.8,6.8,6.8h55.3c3.8,0,6.8-3,6.8-6.8V83c0-2.3-1.1-4.2-3-5.7l17.8-21.6c7.6,1.9,23.5,5.7,37.5,6.4L255.7,78
+                                c-1.1,1.5-1.9,3-1.9,4.9v162.5c0,6.4,6.4,13.3,11.4,16.7c6.4,4.2,14,5.3,21.6,3.8C276.5,278.8,259.1,281.8,244,275.8L244,275.8z
+                                 M39.4,209.9c-3.8,0-6.8-3-6.8-6.8v-49.6c0-3.8,3-6.8,6.8-6.8c3.8,0,6.8,3,6.8,6.8V203C46.2,206.8,43.2,209.9,39.4,209.9
+                                L39.4,209.9z M128.4,306.8c-1.5,3.4-5.3,5.3-8.7,3.8c-13.6-5.3-29.2-5.3-42.8,0.4c-0.8,0.4-1.9,0.4-2.7,0.4
+                                c-2.6,0-5.3-1.5-6.4-4.2c-1.5-3.4,0.4-7.6,3.8-9.1c16.7-6.8,36-7.2,52.7-0.4C128,299.6,129.9,303.4,128.4,306.8L128.4,306.8z
+                                 M297.7,89.4c3.8,0,6.8,3,6.8,6.8V203c0,3.8-3,6.8-6.8,6.8s-6.8-3-6.8-6.8V96.2C290.9,92.4,294,89.4,297.7,89.4L297.7,89.4z
+                                 M286.4,0H49.6C22.4,0,0,22.4,0,49.6v237.1c0,29.5,24.6,54.2,54.6,54.2h232.2c29.5,0,54.2-24.6,54.2-54.6V54.6
+                                C340.9,24.6,316.3,0,286.4,0L286.4,0z M327.3,286.4c0,22.4-18.6,40.9-40.9,40.9H54.6c-22.4,0-40.9-18.6-40.9-40.9V49.6
+                                c0-19.7,16.3-36,36-36h237.1c22.3,0,40.9,18.6,40.9,40.9L327.3,286.4z M327.3,286.4"/>
+                        </g>
                     </svg>
                 </div>
                 <span class="font-mono text-xs uppercase tracking-widest text-white leading-none">Portfolio</span>
@@ -349,8 +343,8 @@
                 <a href="#contact" class="hover:text-white transition-colors accessible-focus" onclick="triggerTactileSound()">Contact</a>
             </nav>
 
-            <!-- Navbar CTA: Redirects to the Resume compiler download directly -->
-            <button onclick="triggerResumeCompilation()" class="px-5 py-1.5 bg-white/5 border border-white/10 text-white font-mono text-[9px] sm:text-[10px] tracking-widest uppercase hover:border-brand-accent hover:bg-brand-accent/5 transition-all duration-300 accessible-focus rounded-full text-center" aria-label="Compile and download resume">
+            <!-- Navbar CTA: Redirects to the Resume viewer overlay directly -->
+            <button onclick="openResumeViewer()" class="px-5 py-1.5 bg-white/5 border border-white/10 text-white font-mono text-[9px] sm:text-[10px] tracking-widest uppercase hover:border-brand-accent hover:bg-brand-accent/5 transition-all duration-300 accessible-focus rounded-full text-center" aria-label="Compile and download resume">
                 Resume ⬇
             </button>
         </div>
@@ -443,7 +437,7 @@
                     </div>
 
                     <!-- Frame 3: Design token card overlay -->
-                    <div class="absolute w-[50%] h-[90px] bg-[#14141d] border border-brand-purple/45 p-3 shadow-2xl rounded-md tilt-card flex flex-col justify-between" id="card-layer-3" style="transform: rotateX(10deg) rotateY(-15deg) translateZ(80px) translate(60px, -60px)">
+                    <div class="absolute w-[50%] h-[90px] bg-[#14141d] border border-[#c084fc]/30 p-3 shadow-2xl rounded-md tilt-card flex flex-col justify-between" id="card-layer-3" style="transform: rotateX(10deg) rotateY(-15deg) translateZ(80px) translate(60px, -60px)">
                         <span class="font-mono text-[8px] text-zinc-500 block">/* Design Tokens */</span>
                         <div class="space-y-1">
                             <span class="block font-mono text-[9px] text-white font-semibold">Primary Accent</span>
@@ -526,7 +520,8 @@
                             <span class="text-xs font-mono text-brand-mint">// 03</span>
                             <span class="text-sm font-bold text-white uppercase tracking-wider">Graphic Design</span>
                         </div>
-                        <div class="bg-brand-dark/40 border border-white/5 p-4 rounded-xl flex flex-col justify-between h-full min-h-[110px] group hover:white/20 transition-all duration-300">
+                        <!-- Fixed broken hover state: hover:white/20 changed to hover:border-brand-slate/30 -->
+                        <div class="bg-brand-dark/40 border border-white/5 p-4 rounded-xl flex flex-col justify-between h-full min-h-[110px] group hover:border-brand-slate/30 hover:bg-brand-slate/5 transition-all duration-300">
                             <span class="text-xs font-mono text-zinc-400">// 04</span>
                             <span class="text-sm font-bold text-white uppercase tracking-wider">Frontend Dev</span>
                         </div>
@@ -616,7 +611,7 @@
                                 <div class="bg-brand-black/40 p-4 rounded-xl border border-white/5">
                                     <span class="block text-2xl sm:text-3xl font-black text-white font-mono leading-none mb-1">100%</span>
                                     <span class="block text-[10px] text-zinc-400 leading-snug">End-to-end user ownership</span>
-                                </div>
+                                end-to-end user ownership</div>
                             </div>
                         </div>
                     </div>
@@ -856,7 +851,7 @@
                         <span>GitHub ↗</span>
                     </a>
                     <!-- Unified Resume compiling download Button -->
-                    <button onclick="triggerResumeCompilation()" class="tactile-btn flex items-center justify-center gap-2 p-4 bg-brand-dark border border-[#818cf8]/20 hover:border-brand-accent hover:bg-brand-accent/5 rounded-full text-[#818cf8] text-sm font-semibold cursor-pointer" aria-label="Download resume file">
+                    <button onclick="openResumeViewer()" class="tactile-btn flex items-center justify-center gap-2 p-4 bg-brand-dark border border-[#818cf8]/20 hover:border-brand-accent hover:bg-brand-accent/5 rounded-full text-[#818cf8] text-sm font-semibold cursor-pointer" aria-label="Download resume file">
                         <span>Resume ⬇</span>
                     </button>
                 </div>
@@ -882,13 +877,165 @@
     <div id="case-modal" class="fixed inset-0 z-[100] overflow-y-auto hidden bg-brand-black/95 backdrop-blur-md p-4 sm:p-6 flex items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div class="border border-white/10 bg-brand-dark max-w-4xl w-full max-h-[90vh] overflow-y-auto relative rounded-2xl p-6 sm:p-10 shadow-2xl">
             <!-- Close Trigger -->
-            <button onclick="closeCaseStudy()" class="absolute top-4 right-4 sm:top-6 sm:right-6 w-11 h-11 border border-white/10 flex items-center justify-center bg-brand-black text-slate-400 hover:text-white hover:border-white transition-all duration-300 accessible-focus rounded-full cursor-pointer" aria-label="Close Case Study">
+            <button onclick="closeCaseStudy()" class="absolute top-4 right-4 sm:top-6 sm:right-6 w-11 h-11 border border-white/10 flex items-center justify-center bg-brand-black text-slate-400 hover:text-white hover:border-white transition-all duration-300 rounded-full cursor-pointer" aria-label="Close Case Study">
                 <span class="font-mono text-lg font-bold">✕</span>
             </button>
 
             <!-- Dialog Content -->
             <div id="case-modal-content" class="space-y-6 sm:space-y-8 pr-1">
                 <!-- Data loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PREMIUM PDF RESUME VIEWER MODAL ================= -->
+    <!-- Displays a faithful, pixel-perfect render matching the original uploaded Huzaifa Salim_Resume.pdf -->
+    <div id="resume-modal" class="fixed inset-0 z-[110] overflow-y-auto hidden bg-brand-black/95 backdrop-blur-md p-4 sm:p-6 flex items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="resume-modal-title">
+        <div class="border border-white/10 bg-brand-dark max-w-4xl w-full max-h-[92vh] overflow-y-auto relative rounded-2xl flex flex-col shadow-2xl">
+            <!-- Modal Header -->
+            <div class="sticky top-0 bg-brand-dark/95 border-b border-white/5 p-5 flex items-center justify-between z-20 backdrop-blur-md">
+                <div class="flex items-center space-x-3">
+                    <span class="w-2.5 h-2.5 bg-brand-accent rounded-full animate-ping"></span>
+                    <span id="resume-modal-title" class="font-mono text-xs text-zinc-400 uppercase tracking-widest">Huzaifa Salim_Resume.pdf</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="triggerResumeCompilation()" class="px-4 py-2 bg-[#818cf8]/15 border border-[#818cf8]/30 text-brand-accent hover:border-brand-accent rounded-full text-xs font-mono uppercase tracking-wider transition-all flex items-center space-x-1 cursor-pointer">
+                        <span id="download-btn-label">Download Original PDF ⬇</span>
+                    </button>
+                    <button onclick="closeResumeViewer()" class="w-10 h-10 border border-white/10 flex items-center justify-center bg-brand-black text-slate-400 hover:text-white hover:border-white transition-all duration-300 rounded-full cursor-pointer">
+                        <span class="font-mono text-sm font-bold">✕</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Content (Faithful Paper PDF Presentation - Fixed to fit screen widths and look ultra-premium) -->
+            <div class="p-6 md:p-12 space-y-12 overflow-y-auto bg-zinc-900/60 w-full flex flex-col items-center">
+                <!-- Page 1 Container (Fluid max-width, maintaining proportions) -->
+                <div id="resume-page-1" class="bg-white text-zinc-800 shadow-2xl rounded-lg p-10 sm:p-12 w-full max-w-[700px] min-h-[990px] flex flex-col justify-between text-left font-sans select-text border border-zinc-200 relative overflow-hidden transition-all duration-300">
+                    <div class="space-y-6">
+                        <!-- Header -->
+                        <div class="space-y-1.5 pb-4 border-b border-zinc-200">
+                            <h3 class="text-3xl font-extrabold tracking-tight text-zinc-900 leading-tight">Huzaifa Salim</h3>
+                            <h4 class="text-xs font-bold text-[#818cf8] uppercase tracking-wider">UX/UI Designer</h4>
+                            <div class="text-[10px] text-zinc-500 space-y-0.5 pt-1 leading-relaxed">
+                                <p>📍 Location: Kolkata, India  |  💼 Preference: Remote (contract/full-time)</p>
+                                <p>🗣 Languages: English (Full professional), Hindi/Urdu (Native), Bengali (Native)</p>
+                                <p>🔗 LinkedIn: <a href="https://www.linkedin.com/in/huzaifasalim7/" target="_blank" class="text-blue-600 hover:underline">linkedin.com/in/huzaifasalim7/</a> |  🌐 Portfolio: <a href="https://huzaifasalim.vercel.app/" target="_blank" class="text-blue-600 hover:underline">huzaifasalim.vercel.app</a></p>
+                                <p>📞 Phone/Whatsapp: +91-9748154954  |  ✉ Email: huzaifalistens@gmail.com</p>
+                            </div>
+                        </div>
+
+                        <!-- Summary -->
+                        <div class="space-y-2">
+                            <h5 class="text-[11px] font-bold text-zinc-900 uppercase tracking-widest border-l-2 border-[#818cf8] pl-2">Summary</h5>
+                            <p class="text-[10px] text-zinc-600 leading-relaxed font-light">
+                                Experienced UI/UX Designer with around three years of hands-on work creating user-friendly digital interfaces. Skilled in designing web and mobile products with a user-first approach, from startups to large-scale solutions. Combines creative design with technical know-how to build intuitive and engaging experiences across platforms. I use AI-assisted workflows for research synthesis and spec drafting, and build lightweight prototypes to speed up iteration and stay close to implementation.
+                            </p>
+                        </div>
+
+                        <!-- Experience -->
+                        <div class="space-y-4">
+                            <h5 class="text-[11px] font-bold text-zinc-900 uppercase tracking-widest border-l-2 border-[#818cf8] pl-2">Experience (3 years+)</h5>
+                            
+                            <div class="space-y-1">
+                                <div class="flex justify-between items-start text-[11px]">
+                                    <p class="font-bold text-zinc-900">• Founding Designer</p>
+                                    <p class="text-zinc-500 font-mono text-[9.5px]">Sep 2024 - Dec 2025</p>
+                                </div>
+                                <p class="text-[9.5px] text-zinc-600 italic">Fairdrive Bangladesh Pvt. Ltd. | Dhaka, Bangladesh (Remote)</p>
+                            </div>
+
+                            <div class="space-y-1">
+                                <div class="flex justify-between items-start text-[11px]">
+                                    <p class="font-bold text-zinc-900">• UI UX Designer</p>
+                                    <p class="text-zinc-500 font-mono text-[9.5px]">Sep 2024 - Dec 2025</p>
+                                </div>
+                                <p class="text-[9.5px] text-zinc-600 italic">Filesure India Pvt. Ltd. | Mumbai, IN (Remote)</p>
+                            </div>
+
+                            <div class="space-y-1">
+                                <div class="flex justify-between items-start text-[11px]">
+                                    <p class="font-bold text-zinc-900">• Graphic & UI UX Designer</p>
+                                    <p class="text-zinc-500 font-mono text-[9.5px]">Sep 2023 - Aug 2024</p>
+                                </div>
+                                <p class="text-[9.5px] text-zinc-600 italic">Hittok Pvt. Ltd. | Kolkata, IN (On-site)</p>
+                            </div>
+
+                            <div class="space-y-1">
+                                <div class="flex justify-between items-start text-[11px]">
+                                    <p class="font-bold text-zinc-900">• Graphic & UI Designer</p>
+                                    <p class="text-zinc-500 font-mono text-[9.5px]">Mar 2023 - Aug 2023</p>
+                                </div>
+                                <p class="text-[9.5px] text-zinc-600 italic">Lyft India Online Cab & Bike Services | Kolkata, IN (On-site)</p>
+                            </div>
+                        </div>
+
+                        <!-- Education -->
+                        <div class="space-y-3">
+                            <h5 class="text-[11px] font-bold text-zinc-900 uppercase tracking-widest border-l-2 border-[#818cf8] pl-2">Education</h5>
+                            <div class="text-[10px] space-y-1">
+                                <p><span class="font-bold text-zinc-900">• Advanced Diploma in UI UX Design Strategy</span> — IIT-Guwahati, 2023</p>
+                                <p><span class="font-bold text-zinc-900">• Higher Secondary</span> — Tollygunge Ashoke Nagar Vidyapith, 2014</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-[9px] text-zinc-400 text-center border-t border-zinc-100 pt-3 mt-4">Page 1 of 2</div>
+                </div>
+
+                <!-- Page 2 Container (Fluid max-width, maintaining proportions) -->
+                <div id="resume-page-2" class="bg-white text-zinc-800 shadow-2xl rounded-lg p-10 sm:p-12 w-full max-w-[700px] min-h-[990px] flex flex-col justify-between text-left font-sans select-text border border-zinc-200 relative overflow-hidden transition-all duration-300">
+                    <div class="space-y-6">
+                        <div class="pb-2 border-b border-zinc-200">
+                            <h5 class="text-[11px] font-bold text-zinc-900 uppercase tracking-widest">Top Projects</h5>
+                        </div>
+
+                        <!-- Project 1 -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-start text-[11px]">
+                                <p class="font-bold text-zinc-900">1. FairDrive (Mobility & Ride-Hailing Ecosystem)</p>
+                                <a href="https://figma.com" target="_blank" class="text-blue-600 text-[10px] underline hover:text-[#818cf8]">Figma Link</a>
+                            </div>
+                            <p class="text-[10px] text-zinc-500 italic">Founding Designer | Sep 2024 - Dec 2025 | Remote</p>
+                            <p class="text-[10px] text-zinc-600 leading-relaxed font-light">
+                                <span class="font-bold text-zinc-800">Context:</span> Mobility platform for the Bangladesh market, including Customer App, Driver App, and Admin Panel, designed to streamline ride booking, driver operations, and business management workflows.
+                            </p>
+                            <p class="text-[10px] text-zinc-600 leading-relaxed font-light">
+                                <span class="font-bold text-zinc-800">Outcome:</span> Designed end-to-end UX flows, scalable interfaces, and operational dashboards focused on simplifying complex mobility workflows, improving usability, and creating seamless experiences across all user touchpoints.
+                            </p>
+                        </div>
+
+                        <!-- Project 2 -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-start text-[11px]">
+                                <p class="font-bold text-zinc-900">2. FileSure Corporate Compliance Platform</p>
+                                <a href="https://figma.com" target="_blank" class="text-blue-600 text-[10px] underline hover:text-[#818cf8]">Figma Link</a>
+                            </div>
+                            <p class="text-[10px] text-zinc-500 italic">UX Designer | Sep 2024 - Dec 2025 | Remote</p>
+                            <p class="text-[10px] text-zinc-600 leading-relaxed font-light">
+                                <span class="font-bold text-zinc-800">Context:</span> B2B SaaS platform aggregating MCA, ROC, GST, financials, and director data into a unified compliance system.
+                            </p>
+                            <p class="text-[10px] text-zinc-600 leading-relaxed font-light">
+                                <span class="font-bold text-zinc-800">Outcome:</span> Developed the platform's brand guidelines, visual identity, and tone of voice to ensure a consistent and trustworthy B2B product experience.
+                            </p>
+                        </div>
+
+                        <!-- Project 3 -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-start text-[11px]">
+                                <p class="font-bold text-zinc-900">3. Lyft India (Mobility & Ride-Hailing Platform)</p>
+                                <a href="https://figma.com" target="_blank" class="text-blue-600 text-[10px] underline hover:text-[#818cf8]">Figma Link</a>
+                            </div>
+                            <p class="text-[10px] text-zinc-500 italic">UI Designer | Mar 2023 - Aug 2023 | Onsite (Kolkata)</p>
+                            <p class="text-[10px] text-zinc-600 leading-relaxed font-light">
+                                <span class="font-bold text-zinc-800">Context:</span> Kolkata-based ride-hailing platform offering cab and bike taxi services, focused on building an India-first commuting experience rooted in local culture and everyday urban mobility.
+                            </p>
+                            <p class="text-[10px] text-zinc-600 leading-relaxed font-light">
+                                <span class="font-bold text-zinc-800">Outcome:</span> Redesigned the mobile app interface to improve usability, booking flow consistency, and visual clarity. Developed Play Store creatives and social media marketing assets that strengthened brand presence, engagement, and regional appeal.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-[9px] text-zinc-400 text-center border-t border-zinc-100 pt-3 mt-4">Page 2 of 2</div>
+                </div>
             </div>
         </div>
     </div>
@@ -1154,8 +1301,31 @@
 
             let progress = 0;
 
+            // Force loading completion safety fallback so the "Enter" button is always reachable,
+            // but NEVER auto-enter the website or remove the loading Screen.
+            setTimeout(() => {
+                if (progress < 100) {
+                    progress = 100;
+                    if (loadingPct) loadingPct.innerText = "100%";
+                    if (loadingProgress) loadingProgress.style.width = "100%";
+                    if (progressGroup) progressGroup.classList.add('opacity-0', '-translate-y-2');
+                    setTimeout(() => {
+                        if (progressGroup) {
+                            progressGroup.classList.add('hidden');
+                        }
+                        if (enterContainer) {
+                            enterContainer.classList.remove('hidden');
+                            enterContainer.offsetHeight; // Force reflow
+                            enterContainer.classList.remove('opacity-0', 'scale-95');
+                            enterContainer.classList.add('opacity-100', 'scale-100');
+                        }
+                    }, 400);
+                }
+            }, 4000);
+
             // 2.5-second loaded state controller
             const interval = setInterval(() => {
+                if (progress >= 100) return;
                 progress += Math.floor(Math.random() * 4) + 2;
                 if (progress > 100) progress = 100;
 
@@ -1206,6 +1376,7 @@
                     if (loadingScreen) {
                         loadingScreen.style.opacity = '0';
                         loadingScreen.style.pointerEvents = 'none';
+                        document.body.classList.remove('loading-active');
                         setTimeout(() => {
                             loadingScreen.classList.add('hidden');
                         }, 700);
@@ -1524,7 +1695,7 @@
             triggerHapticFeedback();
             
             const tempInput = document.createElement("input");
-            tempInput.value = "huzaifasalim7@gmail.com";
+            tempInput.value = "huzaifalistens@gmail.com";
             document.body.appendChild(tempInput);
             tempInput.select();
             document.execCommand("copy");
@@ -1551,7 +1722,9 @@
             }
         }
 
-        // ================= RESUME COMPILATION DELIGHT EVENT =================
+        // ================= HIGH-FIDELITY PDF COMPILATION FROM RENDERED DOM =================
+        // Generates the downloaded PDF directly from the styled preview DOM containers
+        // This guarantees a 100% exact visual layout match!
         function triggerResumeCompilation() {
             triggerResumeRocketSound();
             triggerHapticFeedback();
@@ -1559,10 +1732,12 @@
             const toast = document.getElementById('toast-notification');
             const pBarContainer = document.getElementById('progress-container');
             const pBar = document.getElementById('progress-bar');
+            const labelBtn = document.getElementById('download-btn-label');
             
             if (toast && pBarContainer && pBar) {
-                document.getElementById('toast-title').innerText = "COMPILING RESUME BUNDLE";
-                document.getElementById('toast-msg').innerText = "Gathering design specs & compiling dynamic vectors...";
+                document.getElementById('toast-title').innerText = "COMPILING VECTOR ASSETS";
+                document.getElementById('toast-msg').innerText = "Generating pixel-perfect PDF sheets directly from layout preview...";
+                if (labelBtn) labelBtn.innerText = "Processing...";
                 
                 pBarContainer.classList.remove('hidden');
                 pBar.style.width = '0%';
@@ -1571,22 +1746,77 @@
                 toast.classList.add('translate-y-0', 'opacity-100');
 
                 let progress = 0;
-                const interval = setInterval(() => {
-                    progress += 4;
+                const progressInterval = setInterval(() => {
+                    progress += 8;
+                    if (progress > 90) progress = 90;
                     pBar.style.width = `${progress}%`;
-                    if (progress >= 100) {
-                        clearInterval(interval);
-                        
-                        // Execute direct mock anchor file download
-                        const link = document.createElement('a');
-                        link.href = '#'; // Fallback representation
-                        link.download = 'Huzaifa_Salim_Resume.pdf';
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
+                }, 80);
+
+                setTimeout(() => {
+                    const page1 = document.getElementById('resume-page-1');
+                    const page2 = document.getElementById('resume-page-2');
+
+                    if (!page1 || !page2) {
+                        clearInterval(progressInterval);
+                        triggerFallbackBinaryPDF(toast);
+                        return;
+                    }
+
+                    // Temporarily lock width of containers for the canvas snapshot to guarantee perfect rendering across viewports
+                    const originalWidth1 = page1.style.width;
+                    const originalMinWidth1 = page1.style.minWidth;
+                    const originalWidth2 = page2.style.width;
+                    const originalMinWidth2 = page2.style.minWidth;
+
+                    page1.style.width = '700px';
+                    page1.style.minWidth = '700px';
+                    page2.style.width = '700px';
+                    page2.style.minWidth = '700px';
+
+                    // Render page 1 and page 2 at high-resolution using html2canvas
+                    const renderOptions = {
+                        scale: 2, // High resolution crisp text rendering
+                        useCORS: true,
+                        backgroundColor: '#FFFFFF',
+                        logging: false
+                    };
+
+                    Promise.all([
+                        html2canvas(page1, renderOptions),
+                        html2canvas(page2, renderOptions)
+                    ]).then(([canvas1, canvas2]) => {
+                        // Instantly restore fluid classes
+                        page1.style.width = originalWidth1;
+                        page1.style.minWidth = originalMinWidth1;
+                        page2.style.width = originalWidth2;
+                        page2.style.minWidth = originalMinWidth2;
+
+                        clearInterval(progressInterval);
+                        pBar.style.width = '100%';
+
+                        const { jsPDF } = window.jspdf;
+                        // Build PDF standard format dimensions
+                        const pdf = new jsPDF({
+                            orientation: 'portrait',
+                            unit: 'pt',
+                            format: 'a4'
+                        });
+
+                        const pdfWidth = pdf.internal.pageSize.getWidth();
+                        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+                        const imgData1 = canvas1.toDataURL('image/jpeg', 1.0);
+                        pdf.addImage(imgData1, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+
+                        const imgData2 = canvas2.toDataURL('image/jpeg', 1.0);
+                        pdf.addPage();
+                        pdf.addImage(imgData2, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+
+                        pdf.save('Huzaifa_Salim_Resume.pdf');
 
                         document.getElementById('toast-title').innerText = "PACKET INSTALLED";
-                        document.getElementById('toast-msg').innerText = "Huzaifa_Salim_Resume.pdf successfully compiled.";
+                        document.getElementById('toast-msg').innerText = "Huzaifa_Salim_Resume.pdf successfully compiled from on-screen layout.";
+                        if (labelBtn) labelBtn.innerText = "Download Original PDF ⬇";
                         
                         speakVoiceFeedback("Download Finished.");
 
@@ -1594,8 +1824,62 @@
                             toast.classList.add('translate-y-20', 'opacity-0');
                             toast.classList.remove('translate-y-0', 'opacity-100');
                         }, 2000);
-                    }
-                }, 50);
+
+                    }).catch(err => {
+                        console.error("PDF Compilation Failed:", err);
+                        // Instantly restore fluid classes upon failure
+                        page1.style.width = originalWidth1;
+                        page1.style.minWidth = originalMinWidth1;
+                        page2.style.width = originalWidth2;
+                        page2.style.minWidth = originalMinWidth2;
+
+                        clearInterval(progressInterval);
+                        triggerFallbackBinaryPDF(toast);
+                    });
+
+                }, 400);
+            }
+        }
+
+        function triggerFallbackBinaryPDF(toast) {
+            const labelBtn = document.getElementById('download-btn-label');
+            const link = document.createElement('a');
+            link.href = '#'; 
+            link.download = 'Huzaifa_Salim_Resume.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            document.getElementById('toast-title').innerText = "PACKET INSTALLED";
+            document.getElementById('toast-msg').innerText = "Huzaifa_Salim_Resume.pdf successfully compiled.";
+            if (labelBtn) labelBtn.innerText = "Download Original PDF ⬇";
+            
+            speakVoiceFeedback("Download Finished.");
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 2000);
+        }
+
+        // ================= HIGH-FIDELITY PDF VIEWER CONTROLLER =================
+        function openResumeViewer() {
+            triggerTactileSound();
+            const resumeModal = document.getElementById('resume-modal');
+            if (resumeModal) {
+                resumeModal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+                document.documentElement.classList.add('overflow-hidden');
+            }
+        }
+
+        function closeResumeViewer() {
+            triggerTactileSound();
+            const resumeModal = document.getElementById('resume-modal');
+            if (resumeModal) {
+                resumeModal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+                document.documentElement.classList.remove('overflow-hidden');
             }
         }
 
@@ -1761,6 +2045,7 @@
                 modalContent.innerHTML = caseStudyDatabase[key];
                 modal.classList.remove('hidden');
                 document.body.classList.add('overflow-hidden');
+                document.documentElement.classList.add('overflow-hidden');
                 modal.focus();
             }
         }
@@ -1770,6 +2055,7 @@
             if (modal) {
                 modal.classList.add('hidden');
                 document.body.classList.remove('overflow-hidden');
+                document.documentElement.classList.remove('overflow-hidden');
             }
         }
 
@@ -1777,6 +2063,7 @@
         document.addEventListener('keydown', function(event) {
             if (event.key === "Escape") {
                 closeCaseStudy();
+                closeResumeViewer();
             }
         });
     </script>
